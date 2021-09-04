@@ -1,0 +1,53 @@
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/benope_hr
+    username: root
+    password:
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+  # Templates reloading during development
+  thymeleaf:
+    prefix: file:src/main/resources/templates/
+    cache: false
+  # Static resources reloading during development
+  resources:
+    static-locations: file:src/main/resources/static/
+  data:
+    web:
+      pageable:
+        default-page-size: 10
+        max-page-size: 500
+  output:
+    ansi:
+      enabled: always
+
+server:
+  port: 8080
+  ssl:
+    key-store: classpath:keystore.p12
+    key-store-password: benope
+  error:
+    whitelabel:
+      enabled: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+        exclude: metrics
+  endpoint:
+    health:
+      show-details: always
+    shutdown:
+      enabled: true
+
+jwt:
+  secret: secret
