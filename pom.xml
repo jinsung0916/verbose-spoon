@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.benope</groupId>
-    <artifactId>template</artifactId>
+    <artifactId>verbose-spoon</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>template</name>
-    <description>Spring boot project template written by Kotlin</description>
+    <name>verbose-spoon</name>
+    <description>(주)베노프하우스 업무 시스템</description>
     <properties>
         <java.version>11</java.version>
         <kotlin.version>1.5.21</kotlin.version>
