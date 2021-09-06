@@ -17,6 +17,8 @@ class BeanConfig {
             .configuration
             .setFieldMatchingEnabled(true)
             .setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE)
+            .setDeepCopyEnabled(true)
+            .setSkipNullEnabled(true)
         return modelMapper
     }
 

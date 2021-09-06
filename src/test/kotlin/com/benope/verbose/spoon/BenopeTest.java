@@ -29,7 +29,7 @@ public class BenopeTest {
         Role role = new Role("ROLE_USER");
         roleRepository.save(role);
 
-        User user = new User(USERNAME, passwordEncoder.encode(PASSWORD));
+        User user = new User(USERNAME, passwordEncoder.encode(PASSWORD), null, null, null);
         user.addAuthority(role);
         userRepository.save(user);
 

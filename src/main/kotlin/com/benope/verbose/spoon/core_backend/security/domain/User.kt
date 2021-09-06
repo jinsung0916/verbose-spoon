@@ -14,6 +14,18 @@ class User(
     private val username: String,
     @Column(nullable = false)
     private val password: String,
+    @Embedded
+    var name: FullName?,
+    @Embedded
+    @AttributeOverrides(
+        value = [AttributeOverride(name = "value", column = Column(name = "value"))]
+    )
+    var nickname: Nickname?,
+    @Embedded
+    @AttributeOverrides(
+        value = [AttributeOverride(name = "value", column = Column(name = "email"))]
+    )
+    var email: Email?
 ) : AuditEntity<User>(), UserDetails {
 
     @Id

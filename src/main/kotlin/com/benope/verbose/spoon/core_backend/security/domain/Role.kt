@@ -10,4 +10,11 @@ import javax.persistence.Table
 class Role(
     @Id
     val roleId: String
-) : AuditEntity<Role>()
+) : AuditEntity<Role>() {
+
+    companion object {
+        val ROLE_ADMIN = Role("ROLE_ADMIN")
+        val ROLE_USER = Role("ROLE_USER")
+    }
+
+}
