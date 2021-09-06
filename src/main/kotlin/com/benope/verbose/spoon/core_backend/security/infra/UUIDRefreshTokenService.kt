@@ -3,7 +3,6 @@ package com.benope.verbose.spoon.core_backend.security.infra
 import com.benope.verbose.spoon.core_backend.security.domain.JwtToken
 import com.benope.verbose.spoon.core_backend.security.domain.User
 import com.benope.verbose.spoon.core_backend.security.exception.InvalidJwtTokenException
-import com.benope.verbose.spoon.core_backend.security.exception.UserNotFoundException
 import com.benope.verbose.spoon.core_backend.security.repository.UserRepository
 import com.benope.verbose.spoon.core_backend.security.service.RefreshTokenService
 import com.benope.verbose.spoon.core_backend.security.util.doGenerateToken
@@ -60,6 +59,6 @@ class UUIDRefreshTokenService(
     }
 
     private fun findUserByRefreshToken(refreshToken: JwtToken?): User {
-        return userRepository.findByRefreshToken(refreshToken) ?: throw UserNotFoundException()
+        return userRepository.findByRefreshToken(refreshToken) ?: throw InvalidJwtTokenException()
     }
 }

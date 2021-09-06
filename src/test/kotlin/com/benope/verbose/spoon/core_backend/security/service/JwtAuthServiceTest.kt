@@ -5,7 +5,6 @@ import com.benope.verbose.spoon.core_backend.security.domain.JwtToken
 import com.benope.verbose.spoon.core_backend.security.dto.RefreshRequest
 import com.benope.verbose.spoon.core_backend.security.dto.SignInRequest
 import com.benope.verbose.spoon.core_backend.security.exception.InvalidJwtTokenException
-import com.benope.verbose.spoon.core_backend.security.exception.UserNotFoundException
 import com.benope.verbose.spoon.core_backend.security.repository.UserRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
@@ -100,7 +99,7 @@ internal class JwtAuthServiceTest(
         // When
 
         // Then
-        assertThrows<UserNotFoundException> { authService.refresh(refreshRequest) }
+        assertThrows<InvalidJwtTokenException> { authService.refresh(refreshRequest) }
     }
 
 }
