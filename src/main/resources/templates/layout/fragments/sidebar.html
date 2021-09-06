@@ -2,7 +2,32 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <th:block th:fragment="sidebarFragment">
-    .... 사이드바 코드 작성
+    <div class="sidebar" data-background-color="white" data-color="purple">
+        <!--
+          Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
+
+          Tip 2: you can also add an image using data-image tag
+        -->
+        <div class="logo">
+            <a class="simple-text logo-normal" href="#">Benope</a>
+        </div>
+        <div class="sidebar-wrapper">
+            <ul class="nav">
+                <li class="nav-item active  ">
+                    <a class="nav-link" href="./dashboard.html">
+                        <i class="material-icons">dashboard</i>
+                        <p>대시보드</p>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="./user.html">
+                        <i class="material-icons">person</i>
+                        <p>사용자 관리</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
 </th:block>
 
 </html>
