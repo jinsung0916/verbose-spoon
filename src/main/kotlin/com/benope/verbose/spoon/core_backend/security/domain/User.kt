@@ -1,6 +1,6 @@
 package com.benope.verbose.spoon.core_backend.security.domain
 
-import com.benope.verbose.spoon.core_backend.common.domain.AuditEntity
+import com.benope.verbose.spoon.core_backend.common.audit.AuditEntity
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails

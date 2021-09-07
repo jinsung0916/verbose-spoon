@@ -21,7 +21,7 @@ public class DtoValidationException extends LocalizedException {
     private String getErrorMessage(List<FieldError> errors) {
         return StringUtils.join(
                 errors.stream()
-                        .map(error -> error.getField() + " " + error.getDefaultMessage())
+                        .map(error -> error.getField() + " 이/가 " + error.getDefaultMessage())
                         .collect(Collectors.toList()), ',');
     }
 
