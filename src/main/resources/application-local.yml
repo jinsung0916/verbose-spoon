@@ -29,7 +29,7 @@ spring:
       enabled: always
 
 server:
-  port: 8080
+  port: 8443
   ssl:
     key-store: classpath:keystore.p12
     key-store-password: benope

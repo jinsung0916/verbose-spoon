@@ -68,9 +68,6 @@ class WebSecurityConfig(
             .logout()
             .deleteCookies("JSESSIONID", "remember-me")
 
-        http
-            .exceptionHandling()
-            .accessDeniedPage("/403")
     }
 
     @Bean
