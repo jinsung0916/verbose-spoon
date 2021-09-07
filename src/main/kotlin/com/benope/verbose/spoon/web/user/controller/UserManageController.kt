@@ -1,16 +1,15 @@
 package com.benope.verbose.spoon.web.user.controller
 
+import com.benope.verbose.spoon.core_backend.common.dto.PageableRequest
 import com.benope.verbose.spoon.core_backend.common.exception.DtoValidationException
 import com.benope.verbose.spoon.web.user.dto.CreateUserRequest
 import com.benope.verbose.spoon.web.user.dto.UpdateUserRequest
 import com.benope.verbose.spoon.web.user.dto.UserResponse
 import com.benope.verbose.spoon.web.user.service.UserManageService
 import org.springframework.data.domain.Page
-import org.springframework.data.domain.Pageable
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
-import javax.validation.constraints.NotBlank
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -32,25 +31,28 @@ class UserManageController(
     }
 
     @GetMapping("/list")
-    fun findUserList(@ModelAttribute pageable: Pageable): Page<UserResponse> {
-        return userManageService.findUserList(pageable).map { UserResponse.fromUser(it) }
-    }
-
-    @GetMapping("/user/{username}")
-    fun findUser(
-        @PathVariable @NotBlank username: String?,
+    fun findUserList(
+        @ModelAttribute @Valid pageableRequest: PageableRequest,
         errors: BindingResult
-    ): UserResponse {
+    ): Page<UserResponse> {
         if (errors.hasErrors()) {
             throw DtoValidationException(errors.fieldErrors)
         }
 
+        return userManageService.findUserList(pageableRequest.toPageable())
+            .map { UserResponse.fromUser(it) }
+    }
+
+    @GetMapping("/{username}")
+    fun findUser(
+        @PathVariable username: String
+    ): UserResponse {
         return UserResponse.fromUser(userManageService.findUser(username))
     }
 
-    @PostMapping("/user/{username}")
+    @PostMapping("/{username}")
     fun updateUser(
-        @PathVariable @NotBlank username: String?,
+        @PathVariable username: String,
         @RequestBody @Valid updateUserRequest: UpdateUserRequest,
         errors: BindingResult
     ): UserResponse {
