@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="~{layout/layout}">
+
+<th:block layout:fragment="content">
+    <div class="col-md-6 offset-md-3">
+        <!-- form card register -->
+        <div class="card card-outline-secondary">
+            <div class="card-header">
+                <h3 class="mb-0">사용자 상세</h3>
+            </div>
+            <div class="card-body">
+                <form id="updateForm" class="form" role="form" autocomplete="off">
+                    <div class="form-group">
+                        <label for="username">계정</label>
+                        <input class="form-control-plaintext" id="username" placeholder="계정" readonly
+                               th:value="${user.username}" type="text">
+                    </div>
+                    <div class="form-group row">
+                        <div class="col">
+                            <label for="lastName">성</label>
+                            <input class="form-control" id="lastName" placeholder="성" required
+                                   th:value="${user.lastName}" type="text">
+                        </div>
+                        <div class="col">
+                            <label for="firstName">이름</label>
+                            <input class="form-control" id="firstName" placeholder="이름" required
+                                   th:value="${user.firstName}" type="text">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nickname">별명</label>
+                        <input type="text" class="form-control" id="nickname" placeholder="별명"
+                               th:value="${user.nickname}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" placeholder="Email" th:value="${user.email}"
+                               required>
+                    </div>
+
+                    <div class="form-group">
+                        <a id="changePasswordBtn" class="float-left">비밀번호 변경</a>
+                        <button type="submit" class="btn btn-primary btn-lg float-right">수정</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /form card register -->
+
+    </div>
+
+    <script>
+        $(function () {
+            $('#updateForm').submit(function (e) {
+                e.preventDefault();
+
+                benopeUI.confirmModal('사용자 수정', '수정하시겠습니까?', function () {
+                    var username = $('#username').val();
+                    var updateUserRequest = {
+                        firstName: $('#firstName').val(),
+                        lastName: $('#lastName').val(),
+                        nickname: $('#nickname').val(),
+                        email: $('#email').val()
+                    };
+
+                    benopeAPI.updateUser(username, updateUserRequest)
+                        .then(function () {
+                            benopeUI.confirmModal('사용자 수정', '수정되었습니다.');
+                        }).catch(function (e) {
+                        benopeUI.confirmModal('사용자 수정', e.message)
+                    });
+                });
+            });
+
+            $('#changePasswordBtn').on('click', function (e) {
+                e.preventDefault();
+
+                var username = $('#username').val();
+                location.href = '/user/change-password?username=' + username;
+            })
+        });
+    </script>
+
+</th:block>
+
+</html>
