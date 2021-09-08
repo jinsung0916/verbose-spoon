@@ -18,7 +18,7 @@ class User(
     var name: FullName?,
     @Embedded
     @AttributeOverrides(
-        value = [AttributeOverride(name = "value", column = Column(name = "value"))]
+        value = [AttributeOverride(name = "value", column = Column(name = "nickname"))]
     )
     var nickname: Nickname?,
     @Embedded
