@@ -1,10 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>4xx</title>
-</head>
-<body>
-  4xx
-</body>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="~{layout/layout}">
+
+<th:block layout:fragment="content">
+    <div class="container-fluid">
+
+        <div class="text-center">
+            <div class="error mx-auto" th:text="${status}"></div>
+            <p class="lead text-gray-800 mb-5" th:text="${error}"></p>
+        </div>
+
+    </div>
+</th:block>
+
 </html>
