@@ -10,16 +10,46 @@
     <!-- 사이드바-->
     <th:block th:replace="/layout/fragments/sidebar :: sidebarFragment"></th:block>
 
-    <!-- 상단바-->
-    <th:block th:replace="/layout/fragments/top :: topbarFragment"></th:block>
+    <div class="d-flex flex-column" id="content-wrapper">
+        <div id="content">
+            <!-- 상단바-->
+            <th:block th:replace="/layout/fragments/top :: topbarFragment"></th:block>
 
-    <!-- 본문-->
-    <th:block layout:fragment="content"></th:block>
+            <!-- 본문-->
+            <th:block layout:fragment="content"></th:block>
+        </div>
 
-    <!-- 공통 하단-->
-    <th:block th:replace="/layout/fragments/footer :: footerFragment"></th:block>
+        <!-- 공통 하단-->
+        <th:block th:replace="/layout/fragments/footer :: footerFragment"></th:block>
+    </div>
 </div>
 
 </div>
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Logout Modal-->
+<div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="logoutModal" role="dialog"
+     tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal" type="button">Cancel</button>
+                <a class="btn btn-primary" href="login.html">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
