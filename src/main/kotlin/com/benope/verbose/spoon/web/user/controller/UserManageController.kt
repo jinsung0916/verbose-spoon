@@ -9,6 +9,7 @@ import com.benope.verbose.spoon.web.user.dto.UserResponse
 import com.benope.verbose.spoon.web.user.service.UserManageService
 import com.benope.verbose.spoon.web.user.validation.UpdateUserPasswordRequestValidator
 import org.springframework.data.domain.Page
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
@@ -88,6 +89,14 @@ class UserManageController(
 
         val user = userManageService.updateUserPassword(username, updateUserPasswordRequest)
         return UserResponse.fromUser(user)
+    }
+
+    @DeleteMapping("/{username}/password")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    fun resetUserPassword(
+        @PathVariable username: String
+    ) {
+        userManageService.resetUserPassword(username)
     }
 
 }

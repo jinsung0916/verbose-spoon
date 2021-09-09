@@ -63,4 +63,12 @@ class UserManageService(
         return userRepository.save(user)
     }
 
+    fun resetUserPassword(username: String?): User? {
+        val user = findUser(username)
+        user.setPassword(password = INITIAL_PASSWORD, passwordEncoder = passwordEncoder)
+        return userRepository.save(user)
+    }
+
 }
+
+private const val INITIAL_PASSWORD = "qpshvm4good"
