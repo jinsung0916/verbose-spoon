@@ -50,7 +50,7 @@ class UserManageService(
         return userRepository.save(user)
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or #username == authentication.principal.username")
+    @PreAuthorize("hasRole('ROLE_ADMIN') and #username != authentication.principal.username")
     fun deleteUser(username: String?) {
         val user = findUser(username)
         return userRepository.deleteById(user.userId!!)
