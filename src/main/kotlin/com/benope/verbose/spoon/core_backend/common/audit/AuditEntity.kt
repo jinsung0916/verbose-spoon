@@ -16,16 +16,16 @@ import javax.persistence.Version
 open class AuditEntity<A : AbstractAggregateRoot<A>?> : AbstractAggregateRoot<A>() {
 
     @CreatedDate
-    private var createDateTime: LocalDateTime? = null
+    var createDateTime: LocalDateTime? = null
 
     @CreatedBy
-    private var createdBy: Long? = null
+    var createdBy: Long? = null
 
     @LastModifiedDate
-    private var lastModifiedDatetime: LocalDateTime? = null
+    var lastModifiedDatetime: LocalDateTime? = null
 
     @LastModifiedBy
-    private var lastModifiedBy: Long? = null
+    var lastModifiedBy: Long? = null
 
     // Version property for optimistic locking.
     @Version
