@@ -3,6 +3,7 @@ package com.benope.verbose.spoon.web.user.service
 import com.benope.verbose.spoon.core_backend.security.domain.User
 import com.benope.verbose.spoon.core_backend.security.repository.UserRepository
 import com.benope.verbose.spoon.web.user.dto.CreateUserRequest
+import com.benope.verbose.spoon.web.user.dto.UpdateUserPasswordRequest
 import com.benope.verbose.spoon.web.user.dto.UpdateUserRequest
 import com.benope.verbose.spoon.web.user.exception.DuplicatedUserException
 import com.benope.verbose.spoon.web.user.exception.UserNotExistsException
@@ -45,7 +46,7 @@ class UserManageService(
     @PreAuthorize("hasRole('ROLE_ADMIN') or #username == authentication.principal.username")
     fun updateUser(username: String?, updateUserRequest: UpdateUserRequest?): User {
         val user = findUser(username)
-        updateUserRequest?.updateUser(user)
+        updateUserRequest?.updateUserEntity(user)
         return userRepository.save(user)
     }
 
@@ -53,6 +54,13 @@ class UserManageService(
     fun deleteUser(username: String?) {
         val user = findUser(username)
         return userRepository.deleteById(user.userId!!)
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN') or #username == authentication.principal.username")
+    fun updateUserPassword(username: String?, updateUserPasswordRequest: UpdateUserPasswordRequest?): User? {
+        val user = findUser(username)
+        updateUserPasswordRequest?.updateUserEntity(user, passwordEncoder)
+        return userRepository.save(user)
     }
 
 }

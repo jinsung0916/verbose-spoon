@@ -4,6 +4,7 @@ import com.benope.verbose.spoon.core_backend.common.audit.AuditEntity
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.security.crypto.password.PasswordEncoder
 import java.util.stream.Collectors
 import javax.persistence.*
 
@@ -13,7 +14,7 @@ class User(
     @Column(nullable = false, unique = true)
     private val username: String,
     @Column(nullable = false)
-    private val password: String,
+    private var password: String,
     @Embedded
     var name: FullName?,
     @Embedded
@@ -65,6 +66,10 @@ class User(
 
     override fun getPassword(): String {
         return this.password
+    }
+
+    fun setPassword(password: String?, passwordEncoder: PasswordEncoder?) {
+        this.password = passwordEncoder?.encode(password) ?: throw IllegalArgumentException()
     }
 
     override fun isAccountNonExpired(): Boolean {
