@@ -64,4 +64,11 @@ class UserManageController(
         return UserResponse.fromUser(user)
     }
 
+    @DeleteMapping("/{username}")
+    fun deleteUser(
+        @PathVariable username: String
+    ) {
+        userManageService.deleteUser(username)
+    }
+
 }
