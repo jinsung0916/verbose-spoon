@@ -9,7 +9,6 @@ import com.benope.verbose.spoon.web.user.exception.DuplicatedUserException
 import com.benope.verbose.spoon.web.user.exception.UserNotExistsException
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
@@ -19,7 +18,6 @@ class UserManageService(
     private val passwordEncoder: PasswordEncoder
 ) {
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun createUser(createUserRequest: CreateUserRequest?): User {
         if (isDuplicated(createUserRequest?.username)) {
             throw DuplicatedUserException()
@@ -34,7 +32,6 @@ class UserManageService(
         return userRepository.findByUsername(username) != null
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or #username == authentication.principal.username")
     fun findUser(username: String?): User {
         return userRepository.findByUsername(username) ?: throw UserNotExistsException()
     }
@@ -43,20 +40,17 @@ class UserManageService(
         return pageable?.let { userRepository.findAll(it) } ?: Page.empty()
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or #username == authentication.principal.username")
     fun updateUser(username: String?, updateUserRequest: UpdateUserRequest?): User {
         val user = findUser(username)
         updateUserRequest?.updateUserEntity(user)
         return userRepository.save(user)
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') and #username != authentication.principal.username")
     fun deleteUser(username: String?) {
         val user = findUser(username)
         return userRepository.deleteById(user.userId!!)
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or #username == authentication.principal.username")
     fun updateUserPassword(username: String?, updateUserPasswordRequest: UpdateUserPasswordRequest?): User? {
         val user = findUser(username)
         updateUserPasswordRequest?.updateUserEntity(user, passwordEncoder)

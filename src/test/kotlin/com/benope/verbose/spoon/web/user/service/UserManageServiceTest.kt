@@ -11,7 +11,6 @@ import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Pageable
 import org.springframework.security.crypto.password.PasswordEncoder
-import org.springframework.security.test.context.support.WithMockUser
 
 
 class UserManageServiceTest(
@@ -21,7 +20,6 @@ class UserManageServiceTest(
 
     @Test
     @DisplayName("새로운 사용자를 등록한다.")
-    @WithMockUser(roles = ["ADMIN"])
     fun registerUserTest() {
         // Given
         val createUserRequest = CreateUserRequest(
@@ -37,17 +35,16 @@ class UserManageServiceTest(
         val user = userManageService.createUser(createUserRequest)
 
         // Then
-        assertThat(user?.username).isEqualTo(createUserRequest.username)
-        assertThat(passwordEncoder.matches(createUserRequest.password, user?.password)).isTrue
-        assertThat(user?.name?.firstName).isEqualTo(createUserRequest.firstName)
-        assertThat(user?.name?.lastName).isEqualTo(createUserRequest.lastName)
-        assertThat(user?.nickname?.value).isEqualTo(createUserRequest.nickname)
-        assertThat(user?.email?.value).isEqualTo(createUserRequest.email)
+        assertThat(user.username).isEqualTo(createUserRequest.username)
+        assertThat(passwordEncoder.matches(createUserRequest.password, user.password)).isTrue
+        assertThat(user.name?.firstName).isEqualTo(createUserRequest.firstName)
+        assertThat(user.name?.lastName).isEqualTo(createUserRequest.lastName)
+        assertThat(user.nickname?.value).isEqualTo(createUserRequest.nickname)
+        assertThat(user.email?.value).isEqualTo(createUserRequest.email)
     }
 
     @Test
     @DisplayName("중복된 사용자 이름을 등록할 경우 예외 처리한다.")
-    @WithMockUser(roles = ["ADMIN"])
     fun blockDuplicatedUserTest() {
         // Given
         val createUserRequest = CreateUserRequest(
@@ -67,20 +64,8 @@ class UserManageServiceTest(
     }
 
     @Test
-    @DisplayName("사용자 정보를 갱신한다. - 관리자")
-    @WithMockUser(roles = ["ADMIN"])
-    fun updateUserByAdminTest() {
-        doUpdateUser()
-    }
-
-    @Test
-    @DisplayName("사용자 정보를 갱신한다. - 사용자")
-    @WithMockUser(username = USERNAME)
-    fun updateUserByUserTest() {
-        doUpdateUser()
-    }
-
-    private fun doUpdateUser() {
+    @DisplayName("사용자 정보를 갱신한다.")
+    fun doUpdateUser() {
         // Given
         val updateUserRequest = UpdateUserRequest(
             firstName = "updatedFirstNAme",
@@ -109,32 +94,19 @@ class UserManageServiceTest(
         val users = userManageService.findUserList(pageable)
 
         // Then
-        assertThat(users?.isEmpty).isFalse
+        assertThat(users.isEmpty).isFalse
     }
 
     @Test
-    @DisplayName("사용자 세부 정보를 조회한다. - 일반 사용자")
-    @WithMockUser(username = USERNAME, roles = ["USER"])
-    fun findUserByUserTest() {
-        doFindUser(USERNAME)
-    }
-
-
-    @Test
-    @DisplayName("사용자 세부 정보를 조회한다. - 관리자")
-    @WithMockUser(roles = ["ADMIN"])
-    fun findUserByAdminTest() {
-        doFindUser(USERNAME)
-    }
-
-    private fun doFindUser(username: String?) {
+    @DisplayName("사용자 세부 정보를 조회한다.")
+    fun doFindUser() {
         // Given
 
         // When
-        val user = userManageService.findUser(username)
+        val user = userManageService.findUser(USERNAME)
 
         // Then
-        assertThat(user.username).isEqualTo(username)
+        assertThat(user.username).isEqualTo(USERNAME)
     }
 
 }

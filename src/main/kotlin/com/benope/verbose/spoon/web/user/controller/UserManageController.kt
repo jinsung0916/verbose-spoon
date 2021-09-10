@@ -22,6 +22,7 @@ class UserManageController(
 ) {
 
     @PutMapping("/")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun createUser(
         @RequestBody @Valid createUserRequest: CreateUserRequest,
         errors: BindingResult
@@ -48,6 +49,7 @@ class UserManageController(
     }
 
     @GetMapping("/{username}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or #username == authentication.principal.username")
     fun findUser(
         @PathVariable username: String
     ): UserResponse {
@@ -55,6 +57,7 @@ class UserManageController(
     }
 
     @PostMapping("/{username}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or #username == authentication.principal.username")
     fun updateUser(
         @PathVariable username: String,
         @RequestBody @Valid updateUserRequest: UpdateUserRequest,
@@ -69,6 +72,7 @@ class UserManageController(
     }
 
     @DeleteMapping("/{username}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') and #username != authentication.principal.username")
     fun deleteUser(
         @PathVariable username: String
     ) {
@@ -76,6 +80,7 @@ class UserManageController(
     }
 
     @PostMapping("/{username}/password")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or #username == authentication.principal.username")
     fun updateUserPassword(
         @PathVariable username: String,
         @RequestBody @Valid updateUserPasswordRequest: UpdateUserPasswordRequest,
