@@ -69,7 +69,14 @@ class User(
     }
 
     fun setPassword(password: String?, passwordEncoder: PasswordEncoder?) {
-        this.password = passwordEncoder?.encode(password) ?: throw IllegalArgumentException()
+        this.password = passwordEncoder?.encode(password) ?: throw IllegalArgumentException("PasswordEncoder is null.")
+    }
+
+    fun resetPassword(passwordEncoder: PasswordEncoder?) {
+        val initialPassword = "qpshvm4good"
+        this.password =
+            passwordEncoder?.encode(initialPassword) ?: throw IllegalArgumentException("PasswordEncoder is null.")
+        this.loginFailureCount = 0
     }
 
     override fun isAccountNonExpired(): Boolean {

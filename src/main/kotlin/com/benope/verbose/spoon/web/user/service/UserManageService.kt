@@ -7,6 +7,7 @@ import com.benope.verbose.spoon.web.user.dto.UpdateUserPasswordRequest
 import com.benope.verbose.spoon.web.user.dto.UpdateUserRequest
 import com.benope.verbose.spoon.web.user.exception.DuplicatedUserException
 import com.benope.verbose.spoon.web.user.exception.UserNotExistsException
+import com.benope.verbose.spoon.web.user.validation.UpdateUserPasswordRequestValidator
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -15,7 +16,8 @@ import org.springframework.stereotype.Service
 @Service
 class UserManageService(
     private val userRepository: UserRepository,
-    private val passwordEncoder: PasswordEncoder
+    private val passwordEncoder: PasswordEncoder,
+    private val updateUserPasswordRequestValidator: UpdateUserPasswordRequestValidator
 ) {
 
     fun createUser(createUserRequest: CreateUserRequest?): User {
@@ -25,11 +27,11 @@ class UserManageService(
 
         return createUserRequest?.toUserEntity(passwordEncoder)
             ?.let { userRepository.save(it) }
-            ?: throw IllegalArgumentException()
+            ?: throw IllegalArgumentException("CreateUserRequest is null.")
     }
 
     private fun isDuplicated(username: String?): Boolean {
-        return userRepository.findByUsername(username) != null
+        return userRepository.existsByUsername(username)
     }
 
     fun findUser(username: String?): User {
@@ -48,21 +50,22 @@ class UserManageService(
 
     fun deleteUser(username: String?) {
         val user = findUser(username)
-        return userRepository.deleteById(user.userId!!)
+        user.markDeleted()
+        userRepository.save(user)
     }
 
-    fun updateUserPassword(username: String?, updateUserPasswordRequest: UpdateUserPasswordRequest?): User? {
+    fun updateUserPassword(username: String?, updateUserPasswordRequest: UpdateUserPasswordRequest?): User {
+        updateUserPasswordRequestValidator.validate(updateUserPasswordRequest)
+
         val user = findUser(username)
         updateUserPasswordRequest?.updateUserEntity(user, passwordEncoder)
         return userRepository.save(user)
     }
 
-    fun resetUserPassword(username: String?): User? {
+    fun resetUserPassword(username: String?): User {
         val user = findUser(username)
-        user.setPassword(password = INITIAL_PASSWORD, passwordEncoder = passwordEncoder)
+        user.resetPassword(passwordEncoder = passwordEncoder)
         return userRepository.save(user)
     }
 
 }
-
-private const val INITIAL_PASSWORD = "qpshvm4good"

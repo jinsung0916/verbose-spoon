@@ -1,6 +1,7 @@
 package com.benope.verbose.spoon.web.user.validation
 
 import com.benope.verbose.spoon.web.user.dto.UpdateUserPasswordRequest
+import com.benope.verbose.spoon.web.user.exception.PasswordNotEqualException
 import org.springframework.stereotype.Component
 import org.springframework.validation.Errors
 import org.springframework.validation.Validator
@@ -14,7 +15,13 @@ class UpdateUserPasswordRequestValidator : Validator {
 
     override fun validate(target: Any, errors: Errors) {
         if (!hasValidPassword(target as UpdateUserPasswordRequest)) {
-            errors.reject("exception.password.not.equal", "비밀번호가 일치하지 않습니다.")
+            errors.reject("exception.password.not.equal")
+        }
+    }
+
+    fun validate(target: UpdateUserPasswordRequest?) {
+        if (!hasValidPassword(target)) {
+            throw PasswordNotEqualException()
         }
     }
 

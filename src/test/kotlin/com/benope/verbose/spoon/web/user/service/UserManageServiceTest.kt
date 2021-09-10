@@ -2,8 +2,11 @@ package com.benope.verbose.spoon.web.user.service
 
 import com.benope.verbose.spoon.BenopeTest
 import com.benope.verbose.spoon.web.user.dto.CreateUserRequest
+import com.benope.verbose.spoon.web.user.dto.UpdateUserPasswordRequest
 import com.benope.verbose.spoon.web.user.dto.UpdateUserRequest
 import com.benope.verbose.spoon.web.user.exception.DuplicatedUserException
+import com.benope.verbose.spoon.web.user.exception.PasswordNotEqualException
+import com.benope.verbose.spoon.web.user.exception.UserNotExistsException
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -107,6 +110,46 @@ class UserManageServiceTest(
 
         // Then
         assertThat(user.username).isEqualTo(USERNAME)
+    }
+
+    @Test
+    @DisplayName("사용자를 삭제한다.")
+    fun deleteUserTest() {
+        // Given
+        val user = userManageService.findUser(USERNAME)
+
+        // When
+        userManageService.deleteUser(user.username)
+
+        // Then
+        assertThrows<UserNotExistsException> { userManageService.findUser(user.username) }
+    }
+
+    @Test
+    @DisplayName("사용자 비밀번호를 변경한다.")
+    fun updateUserPasswordTest() {
+        // Given
+        val password = "123"
+        val request = UpdateUserPasswordRequest(password = password, passwordConfirm = password)
+
+        // When
+        val savedUser = userManageService.updateUserPassword(USERNAME, request)
+
+        // Then
+        assertThat(passwordEncoder.matches(password, savedUser.password)).isTrue
+    }
+
+    @Test
+    @DisplayName("사용자 비밀번호를 변경 시 비밀번호 동일 여부를 확인한다.")
+    fun updateUserPasswordValidationTest() {
+        // Given
+        val password = "123"
+        val request = UpdateUserPasswordRequest(password = password, passwordConfirm = "$password!")
+
+        // When
+
+        // Then
+        assertThrows<PasswordNotEqualException> { userManageService.updateUserPassword(USERNAME, request) }
     }
 
 }
