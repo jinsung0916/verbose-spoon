@@ -16,19 +16,26 @@ import javax.persistence.Version
 open class AuditEntity<A : AbstractAggregateRoot<A>?> : AbstractAggregateRoot<A>() {
 
     @CreatedDate
-    var createDateTime: LocalDateTime? = null
+    private var createDateTime: LocalDateTime? = null
 
     @CreatedBy
-    var createdBy: Long? = null
+    private var createdBy: Long? = null
 
     @LastModifiedDate
-    var lastModifiedDatetime: LocalDateTime? = null
+    private var lastModifiedDatetime: LocalDateTime? = null
 
     @LastModifiedBy
-    var lastModifiedBy: Long? = null
+    private var lastModifiedBy: Long? = null
 
     // Version property for optimistic locking.
     @Version
     private var version: Int? = null
+
+    // Delete flag for soft delete
+    private var isDeleted: Boolean = false
+
+    fun markDeleted() {
+        isDeleted = true
+    }
 
 }
