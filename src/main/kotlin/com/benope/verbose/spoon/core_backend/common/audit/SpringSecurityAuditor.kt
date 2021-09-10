@@ -20,6 +20,6 @@ class SpringSecurityAuditor : AuditorAware<Long> {
     }
 
     private fun isValidAuthentication(authentication: Authentication?): Boolean {
-        return !Objects.isNull(authentication) && authentication!!.isAuthenticated
+        return !Objects.isNull(authentication) && authentication!!.isAuthenticated && authentication.principal is User
     }
 }
