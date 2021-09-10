@@ -19,10 +19,10 @@ public class DtoValidationException extends LocalizedException {
     }
 
     private String getErrorMessage(List<FieldError> errors) {
-        return StringUtils.join(
+        return "[" + StringUtils.join(
                 errors.stream()
-                        .map(error -> error.getField() + " 이/가 " + error.getDefaultMessage())
-                        .collect(Collectors.toList()), ',');
+                        .map(error -> "\"" + error.getField() + " " + error.getDefaultMessage() + "\"")
+                        .collect(Collectors.toList()), ',') + "]";
     }
 
 }
