@@ -115,4 +115,7 @@ class User(
         return this.refreshToken == refreshToken
     }
 
+    fun hasRole(role: Role): Boolean {
+        return authorities.any() { it == role.roleId }
+    }
 }

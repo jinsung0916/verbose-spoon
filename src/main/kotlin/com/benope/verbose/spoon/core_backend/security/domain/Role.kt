@@ -15,6 +15,7 @@ class Role(
     companion object {
         val ROLE_ADMIN = Role("ROLE_ADMIN")
         val ROLE_USER = Role("ROLE_USER")
+        val ROLE_APPROVAL = Role("ROLE_APPROVAL")
     }
 
 }
