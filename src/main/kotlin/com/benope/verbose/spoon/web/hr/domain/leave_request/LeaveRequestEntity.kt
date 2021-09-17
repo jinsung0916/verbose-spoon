@@ -1,6 +1,8 @@
 package com.benope.verbose.spoon.web.hr.domain.leave_request
 
 import com.benope.verbose.spoon.core_backend.common.audit.AuditEntity
+import com.benope.verbose.spoon.core_backend.security.domain.Role
+import com.benope.verbose.spoon.core_backend.security.domain.User
 import com.benope.verbose.spoon.web.hr.domain.LeaveRequest
 import com.benope.verbose.spoon.web.hr.exception.ApprovalLineNotAuthorizedException
 import com.benope.verbose.spoon.web.hr.exception.LeaveRequestUnableToDeleteException
@@ -14,7 +16,7 @@ import javax.persistence.*
 abstract class LeaveRequestEntity(
     private var userId: Long,
     @Embedded
-    protected var period: LeavePeriod
+    private var period: LeavePeriod
 ) : LeaveRequest, AuditEntity<LeaveRequestEntity>() {
 
     @Id
@@ -34,6 +36,10 @@ abstract class LeaveRequestEntity(
 
     override fun getRequestUserId(): Long {
         return this.userId
+    }
+
+    fun getPeriod(): LeavePeriod {
+        return this.period
     }
 
     fun addApprovalLine(approvalLine: ApprovalLine) {
@@ -64,6 +70,19 @@ abstract class LeaveRequestEntity(
         } else {
             super.markDeleted()
         }
+    }
+
+    fun markDeleted(requestUser: User?) {
+        if (hasDeleteAuthority(requestUser)) {
+            markDeleted()
+        } else {
+            TODO("Not authorized 예외 처리")
+        }
+    }
+
+    private fun hasDeleteAuthority(requestUser: User?): Boolean {
+        return this.userId == requestUser?.userId
+                || (requestUser?.hasRole(Role.ROLE_ADMIN) ?: false)
     }
 
 }

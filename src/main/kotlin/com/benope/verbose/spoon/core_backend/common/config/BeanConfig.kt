@@ -14,10 +14,9 @@ class BeanConfig {
         val modelMapper = ModelMapper()
         modelMapper
             .configuration
-            .setMatchingStrategy(MatchingStrategies.STRICT)
+            .setMatchingStrategy(MatchingStrategies.LOOSE)
             .setFieldMatchingEnabled(true)
             .setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE)
-            .setDeepCopyEnabled(true)
             .setSkipNullEnabled(true)
         return modelMapper
     }
