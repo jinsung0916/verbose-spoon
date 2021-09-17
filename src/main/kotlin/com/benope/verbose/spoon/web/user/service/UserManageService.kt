@@ -38,6 +38,11 @@ class UserManageService(
         return userRepository.findByUsername(username) ?: throw UserNotExistsException()
     }
 
+    fun findUserById(userId: Long?): User {
+        userId ?: throw IllegalArgumentException("UserId cannot be null.")
+        return userRepository.findById(userId).orElseThrow { UserNotExistsException() }
+    }
+
     fun findUserList(pageable: Pageable?): Page<User> {
         return pageable?.let { userRepository.findAll(it) } ?: Page.empty()
     }

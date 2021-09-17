@@ -6,11 +6,15 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
+import java.util.*
 
 interface UserRepository : JpaRepository<User, Long> {
 
     @Query("SELECT u from User u where u.isDeleted = false")
     override fun findAll(pageable: Pageable): Page<User>
+
+    @Query("SELECT u from User u where u.userId = :userId AND u.isDeleted = false")
+    override fun findById(userId: Long): Optional<User>
 
     @Query("SELECT u from User u where u.username = :username AND u.isDeleted = false")
     fun findByUsername(username: String?): User?
