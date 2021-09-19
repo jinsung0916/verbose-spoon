@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="~{layout/layout}">
+
+<th:block layout:fragment="content">
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">연차 관리</h6>
+        </div>
+        <div class="card-body">
+            <div class="row mb-lg-3">
+                <div class="col-auto">
+                    <select class="form-control" id="selectBox">
+                        <option value="">사용자 선택</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-bordered" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <td>사유</td>
+                        <td>사용 연차</td>
+                        <td>잔여 연차</td>
+                        <td>유효 기간</td>
+                        <td>Actions</td>
+                    </tr>
+                    </thead>
+                    <tbody id="table">
+
+                    </tbody>
+                </table>
+            </div>
+
+            <div>
+                <button class="btn btn-dark btn-sm float-right" id="createBtn" type="submit">연차 생성</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var TITLE = '연차 관리';
+
+        $(function () {
+            benopeAPI.findUserList()
+                .then(getContent)
+                .then(selectBoxAppender)
+                .catch(function (e) {
+                    benopeUI.confirmModal(TITLE, e.message)
+                });
+
+            $('#selectBox').on('change', function () {
+                $('#table').empty();
+
+                var userId = $(this).val();
+
+                userId &&
+                benopeAPI.findTimeOffByUserId(userId)
+                    .then(TimeOffTableAppenderWrapper)
+                    .catch(function (e) {
+                        benopeUI.confirmModal(TITLE, e.message)
+                    });
+            });
+
+            $('#createBtn').on('click', function () {
+                var userId = $('#selectBox').val();
+
+                userId &&
+                benopeUI.createTimeOffModal(userId)
+                    .then(benopeAPI.createTimeOff)
+                    .then(timeOffTableAppender)
+                    .catch(function (e) {
+                        benopeUI.confirmModal(TITLE, e.message);
+                    });
+            });
+        });
+
+        function getContent(data) {
+            return _.get(data, 'content');
+        }
+
+        function selectBoxAppender(list) {
+            _.forEach(list, function (user) {
+                $('#selectBox').append("<option value='" + user.userId + "'>" + user.nickname + "</option>");
+            });
+        }
+
+        function TimeOffTableAppenderWrapper(list) {
+            _.forEach(list, timeOffTableAppender);
+        }
+
+        function timeOffTableAppender(timeOff) {
+            $('#table').append(makeTableRow(timeOff));
+
+            function makeTableRow(timeOff) {
+                var tableRow = $(getHtml(timeOff));
+
+                tableRow.find('.btn').on('click', function () {
+                    var eventHandler = _.partial(deleteEventHandler, timeOff.timeOffId, this)
+                    benopeUI.confirmModal(TITLE, "삭제하시겠습니까?", eventHandler);
+                });
+
+                return tableRow;
+            }
+
+            function getHtml(timeOff) {
+                var html =
+                    "<tr>" +
+                    "   <td>{{reason}}</td>" +
+                    "   <td>{{usedDays}}일</td>" +
+                    "   <td>{{remainingDays}}일</td>" +
+                    "   <td>{{startDate}} ~ {{endDate}}</td>" +
+                    "   <td class='text-center align-middle'>" +
+                    "       <div class='btn-group align-top'>" +
+                    "           <button class='btn btn-sm btn-outline-secondary badge'><i class='fa fa-trash'></i></button>" +
+                    "       </div>" +
+                    "   </td>" +
+                    "</tr>";
+                return Handlebars.compile(html)(timeOff)
+            }
+
+            function deleteEventHandler(timeOffId, element) {
+                benopeAPI.deleteTimeOff(timeOffId)
+                    .then(function () {
+                        benopeUI.confirmModal(TITLE, "삭제되었습니다.", null, function () {
+                            $(element).closest('tr').remove();
+                        });
+                    }).catch(function (e) {
+                    benopeUI.confirmModal(TITLE, e.message);
+                });
+            }
+        }
+    </script>
+</th:block>
+
+</html>

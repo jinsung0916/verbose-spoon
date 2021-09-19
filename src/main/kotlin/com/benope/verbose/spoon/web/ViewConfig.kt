@@ -22,9 +22,13 @@ class ViewConfig : WebMvcConfigurer {
         // dashboard
         registry.addViewController("/dashboard").setViewName("index")
 
-        // user
+        // 사용자 관리
         registry.addViewController("/user/list").setViewName("/user/userList")
         registry.addViewController("/user/create").setViewName("/user/userCreate")
+
+        // 휴가 관리
+        registry.addViewController("/time-off/create").setViewName("/vacation/timeOffCreate")
+
     }
 }
 

@@ -83,6 +83,47 @@ var benopeAPI = benopeAPI || (function ($) {
                     error: _.partial(handleAjaxError, _, reject)
                 });
             });
+        },
+
+        findTimeOffByUserId: function (userId) {
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: "/api/v1/time-off/list",
+                    method: "GET",
+                    data: {
+                        userId: userId
+                    },
+                    acceptType: "json",
+                    success: resolve,
+                    error: _.partial(handleAjaxError, _, reject)
+                });
+            });
+        },
+
+        createTimeOff: function (createTimeOffRequest) {
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: "/api/v1/time-off/",
+                    method: "PUT",
+                    contentType: "application/json",
+                    acceptType: "json",
+                    data: JSON.stringify(createTimeOffRequest),
+                    success: resolve,
+                    error: _.partial(handleAjaxError, _, reject)
+                });
+            });
+        },
+
+        deleteTimeOff: function (timeOffId) {
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: "/api/v1/time-off/" + timeOffId,
+                    method: "DELETE",
+                    acceptType: "json",
+                    success: resolve,
+                    error: _.partial(handleAjaxError, _, reject)
+                });
+            });
         }
     }
 
