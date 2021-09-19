@@ -38,7 +38,7 @@ abstract class LeaveRequestEntity(
         return this.userId
     }
 
-    protected fun getPeriod(): LeavePeriod {
+    protected open fun getPeriod(): LeavePeriod {
         return this.period
     }
 

@@ -15,7 +15,7 @@ abstract class TimeOffEntity(
     private var userId: Long,
 
     @Embedded
-    var validityPeriod: ValidityPeriod,
+    open var validityPeriod: ValidityPeriod,
 
     @Embedded
     @AttributeOverrides(
@@ -27,7 +27,8 @@ abstract class TimeOffEntity(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var timeOffId: Long? = null
+    open var timeOffId: Long? = null
+        protected set
 
     @ElementCollection
     @CollectionTable(
