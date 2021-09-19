@@ -5,11 +5,13 @@ import com.benope.verbose.spoon.web.hr.dto.CreateTimeOffRequest
 enum class TimeOffType {
     PAID {
         override fun toEntity(createTimeOffRequest: CreateTimeOffRequest?): TimeOffEntity {
-            return PaidTimeOff(
+            val entity = PaidTimeOff(
                 userId = createTimeOffRequest?.userId!!,
                 validityPeriod = ValidityPeriod(createTimeOffRequest.startDate!!, createTimeOffRequest.endDate!!),
                 remainingDays = TimeOffDay(createTimeOffRequest.remainingDays!!)
             )
+            entity.reason = createTimeOffRequest.reason
+            return entity
         }
     },
     DELEGATE {
@@ -18,5 +20,5 @@ enum class TimeOffType {
         }
     };
 
-    abstract fun toEntity(createTimeOffRequest: CreateTimeOffRequest?) : TimeOffEntity
+    abstract fun toEntity(createTimeOffRequest: CreateTimeOffRequest?): TimeOffEntity
 }

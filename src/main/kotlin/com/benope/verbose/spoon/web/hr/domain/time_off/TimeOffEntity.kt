@@ -36,6 +36,8 @@ abstract class TimeOffEntity(
     )
     private var timeOffUsageHistory: MutableSet<TimeOffUsageHistory> = mutableSetOf()
 
+    open var reason: String? = null
+
     private fun available(): Boolean {
         return validityPeriod.valid() && hasRemainingDays()
     }

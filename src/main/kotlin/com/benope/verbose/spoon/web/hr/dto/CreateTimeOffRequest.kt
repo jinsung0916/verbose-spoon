@@ -3,6 +3,7 @@ package com.benope.verbose.spoon.web.hr.dto
 import com.benope.verbose.spoon.web.hr.domain.time_off.TimeOffEntity
 import com.benope.verbose.spoon.web.hr.domain.time_off.TimeOffType
 import java.time.LocalDate
+import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
 data class CreateTimeOffRequest(
@@ -20,7 +21,10 @@ data class CreateTimeOffRequest(
     var endDate: LocalDate?,
 
     @field:NotNull
-    var remainingDays: Double?
+    var remainingDays: Double?,
+
+    @field:NotBlank
+    var reason: String?
 
 ) {
     fun toEntity(): TimeOffEntity {

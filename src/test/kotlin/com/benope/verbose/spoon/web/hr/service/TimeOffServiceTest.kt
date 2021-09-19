@@ -37,7 +37,8 @@ class TimeOffServiceTest(
             userId = user?.userId,
             startDate = LocalDate.now(),
             endDate = LocalDate.now().plusYears(1),
-            remainingDays = 10.0
+            remainingDays = 10.0,
+            reason = "연차"
         )
 
         val response = timeOffService.createTimeOff(createTimeOffRequest)
