@@ -11,7 +11,7 @@ class SickLeave(
     period: LeavePeriod
 ) : LeaveRequestEntity(userId, period) {
 
-    override fun totalTimeOffDay(): TimeOffDay {
+    override fun getTotalTimeOffDay(): TimeOffDay {
         return TimeOffDay.ZERO
     }
 

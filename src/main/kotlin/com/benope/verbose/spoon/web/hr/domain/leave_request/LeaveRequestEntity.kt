@@ -3,7 +3,7 @@ package com.benope.verbose.spoon.web.hr.domain.leave_request
 import com.benope.verbose.spoon.core_backend.common.audit.AuditEntity
 import com.benope.verbose.spoon.core_backend.security.domain.Role
 import com.benope.verbose.spoon.core_backend.security.domain.User
-import com.benope.verbose.spoon.web.hr.domain.LeaveRequest
+import com.benope.verbose.spoon.web.hr.domain.time_off.TimeOffDay
 import com.benope.verbose.spoon.web.hr.exception.ApprovalLineNotAuthorizedException
 import com.benope.verbose.spoon.web.hr.exception.LeaveRequestUnableToDeleteException
 import java.time.LocalDateTime
@@ -17,7 +17,7 @@ abstract class LeaveRequestEntity(
     private var userId: Long,
     @Embedded
     private var period: LeavePeriod
-) : LeaveRequest, AuditEntity<LeaveRequestEntity>() {
+) :  AuditEntity<LeaveRequestEntity>() {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,17 +30,21 @@ abstract class LeaveRequestEntity(
     )
     private var approvalLine: MutableList<ApprovalLine> = mutableListOf()
 
-    override fun getId(): Long? {
+    fun getId(): Long? {
         return this.leaveRequestId
     }
 
-    override fun getRequestUserId(): Long {
+    fun getRequestUserId(): Long {
         return this.userId
     }
 
-    fun getPeriod(): LeavePeriod {
+    protected fun getPeriod(): LeavePeriod {
         return this.period
     }
+
+    abstract fun getTotalTimeOffDay(): TimeOffDay
+
+    abstract fun getType(): LeaveRequestType
 
     fun addApprovalLine(approvalLine: ApprovalLine) {
         this.approvalLine.add(approvalLine)

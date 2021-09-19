@@ -27,7 +27,12 @@ class LeaveRequestService(
         val leaveRequestEntity = request.toEntity(userManageService)
         val savedEntity = leaveRequestRepository.save(leaveRequestEntity)
 
-        timeOffService.useTimeOff(savedEntity)
+        timeOffService.useTimeOff(
+            request.userId,
+            leaveRequestEntity.getId(),
+            leaveRequestEntity.getType(),
+            leaveRequestEntity.getTotalTimeOffDay()
+        )
 
         return toLeaveRequestResp(savedEntity)
     }
@@ -66,7 +71,7 @@ class LeaveRequestService(
         leaveRequest.markDeleted(requestUser)
         val savedEntity = leaveRequestRepository.save(leaveRequest)
 
-        timeOffService.undoUseTimeOff(savedEntity)
+        timeOffService.undoUseTimeOff(savedEntity.getId(), savedEntity.getRequestUserId())
     }
 
     fun approveRequest(leaveRequestId: Long?, approveUserId: Long?) {
@@ -80,9 +85,6 @@ class LeaveRequestService(
 
     private fun toLeaveRequestResp(leaveRequestEntity: LeaveRequestEntity): LeaveRequestResp {
         val leaveRequestResp = modelMapper.map(leaveRequestEntity, LeaveRequestResp::class.java)
-        leaveRequestResp.type = leaveRequestEntity.getType()
-        leaveRequestResp.startDate = leaveRequestEntity.getPeriod().startDate
-        leaveRequestResp.endDate = leaveRequestEntity.getPeriod().endDate
         leaveRequestResp.isApproved = leaveRequestEntity.isApproved()
         return leaveRequestResp
     }

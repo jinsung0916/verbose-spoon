@@ -32,7 +32,7 @@ class LeaveRequestCreateTest(
         val savedRequest = leaveRequestRepository.save(leaveRequest)
 
         assertThat(savedRequest.getId()).isNotNull
-        assertThat(savedRequest.totalTimeOffDay()).isEqualTo(TimeOffDay.HALF)
+        assertThat(savedRequest.getTotalTimeOffDay()).isEqualTo(TimeOffDay.HALF)
     }
 
     @Test
@@ -68,7 +68,7 @@ class LeaveRequestCreateTest(
         val savedRequest = leaveRequestRepository.save(leaveRequest)
 
         assertThat(savedRequest.getId()).isNotNull
-        assertThat(savedRequest.totalTimeOffDay()).isEqualTo(TimeOffDay(1))
+        assertThat(savedRequest.getTotalTimeOffDay()).isEqualTo(TimeOffDay(1))
     }
 
     @Test
@@ -87,7 +87,7 @@ class LeaveRequestCreateTest(
         val savedRequest = leaveRequestRepository.save(leaveRequest)
 
         assertThat(savedRequest.getId()).isNotNull
-        assertThat(savedRequest.totalTimeOffDay()).isEqualTo(TimeOffDay.ZERO)
+        assertThat(savedRequest.getTotalTimeOffDay()).isEqualTo(TimeOffDay.ZERO)
     }
 
 }

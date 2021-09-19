@@ -1,6 +1,5 @@
 package com.benope.verbose.spoon.web.hr.domain.time_off
 
-import com.benope.verbose.spoon.web.hr.domain.LeaveRequest
 import com.benope.verbose.spoon.web.hr.domain.leave_request.LeaveRequestType
 import javax.persistence.DiscriminatorValue
 import javax.persistence.Entity
@@ -20,9 +19,9 @@ class PaidTimeOff(
         return TimeOffType.PAID
     }
 
-    override fun supports(leaveRequest: LeaveRequest): Boolean {
-        return leaveRequest.getType() == LeaveRequestType.FULL_DAY ||
-                leaveRequest.getType() == LeaveRequestType.HALF_DAY
+    override fun supports(leaveRequestType: LeaveRequestType?): Boolean {
+        return leaveRequestType == LeaveRequestType.FULL_DAY ||
+                leaveRequestType == LeaveRequestType.HALF_DAY
     }
 
 }

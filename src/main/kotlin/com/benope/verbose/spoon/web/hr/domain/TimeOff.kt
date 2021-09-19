@@ -1,5 +1,6 @@
 package com.benope.verbose.spoon.web.hr.domain
 
+import com.benope.verbose.spoon.web.hr.domain.leave_request.LeaveRequestType
 import com.benope.verbose.spoon.web.hr.domain.time_off.TimeOffDay
 import com.benope.verbose.spoon.web.hr.domain.time_off.TimeOffEntity
 import com.benope.verbose.spoon.web.hr.domain.time_off.TimeOffType
@@ -9,18 +10,20 @@ interface TimeOff {
     /**
      * 주어진 휴가 신청을 처리할 수 있는지 확인한다.
      *
-     * @param leaveRequest 휴가 신청
+     * @param leaveRequestType 휴가 신청 유형
      * @return 처리 가능 여부
      */
-    fun supports(leaveRequest: LeaveRequest): Boolean
+    fun supports(leaveRequestType: LeaveRequestType?): Boolean
 
     /**
      * 휴가 신청을 처리한다.
      *
-     * @param leaveRequest 휴가 신청
+     * @param leaveRequestId 휴가 신청 ID
+     * @param leaveRequestType 휴가 신청 유형
+     * @param requiredTimeOffDay 휴가 신청 일수
      * @return 처리된 휴가 신청 일수
      */
-    fun useTimeOff(leaveRequest: LeaveRequest, requiredTimeOffDay: TimeOffDay): TimeOffDay
+    fun useTimeOff(leaveRequestId: Long?, leaveRequestType: LeaveRequestType?, requiredTimeOffDay: TimeOffDay?): TimeOffDay
 
     /**
      * 휴가 신청을 취소한다.

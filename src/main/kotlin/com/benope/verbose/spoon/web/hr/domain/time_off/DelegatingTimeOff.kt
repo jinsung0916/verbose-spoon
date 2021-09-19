@@ -1,7 +1,7 @@
 package com.benope.verbose.spoon.web.hr.domain.time_off
 
-import com.benope.verbose.spoon.web.hr.domain.LeaveRequest
 import com.benope.verbose.spoon.web.hr.domain.TimeOff
+import com.benope.verbose.spoon.web.hr.domain.leave_request.LeaveRequestType
 import com.benope.verbose.spoon.web.hr.exception.NotEnoughTimeOffException
 import org.springframework.data.domain.AbstractAggregateRoot
 import java.util.stream.Collectors
@@ -15,17 +15,22 @@ class DelegatingTimeOff(
     private val comparator: Comparator<TimeOffEntity>
 ) : TimeOff, AbstractAggregateRoot<DelegatingTimeOff>() {
 
-    override fun supports(leaveRequest: LeaveRequest): Boolean {
+    override fun supports(leaveRequestType: LeaveRequestType?): Boolean {
         // 모든 휴가 신청을 파라미터로 받아 적절한 연차에 위임한다.
         return true
     }
 
-    override fun useTimeOff(leaveRequest: LeaveRequest, requiredTimeOffDay: TimeOffDay): TimeOffDay {
+    override fun useTimeOff(
+        leaveRequestId: Long?,
+        leaveRequestType: LeaveRequestType?,
+        requiredTimeOffDay: TimeOffDay?
+    ): TimeOffDay {
+        requiredTimeOffDay ?: throw IllegalArgumentException("requiredTimeOffDay cannot be null.")
 
-        var remainDays = requiredTimeOffDay
+        var remainDays = requiredTimeOffDay!!
 
         for (timeOff in sortedTimeOffList()) {
-            val processedTimeOffDays = timeOff.useTimeOff(leaveRequest, remainDays)
+            val processedTimeOffDays = timeOff.useTimeOff(leaveRequestId, leaveRequestType, remainDays)
             remainDays = remainDays.minus(processedTimeOffDays)
             if (remainDays == TimeOffDay.ZERO) {
                 break

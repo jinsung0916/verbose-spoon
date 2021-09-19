@@ -17,7 +17,7 @@ class HalfDayLeave(
         }
     }
 
-    override fun totalTimeOffDay(): TimeOffDay {
+    override fun getTotalTimeOffDay(): TimeOffDay {
         return TimeOffDay.HALF
     }
 

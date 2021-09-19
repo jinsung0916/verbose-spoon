@@ -1,6 +1,7 @@
 package com.benope.verbose.spoon.web.hr.service
 
-import com.benope.verbose.spoon.web.hr.domain.LeaveRequest
+import com.benope.verbose.spoon.web.hr.domain.leave_request.LeaveRequestType
+import com.benope.verbose.spoon.web.hr.domain.time_off.TimeOffDay
 import com.benope.verbose.spoon.web.hr.domain.time_off.TimeOffEntity
 import com.benope.verbose.spoon.web.hr.dto.CreateTimeOffRequest
 import com.benope.verbose.spoon.web.hr.dto.TimeOffResponse
@@ -16,19 +17,28 @@ class TimeOffService(
     private val modelMapper: ModelMapper
 ) {
 
-    fun useTimeOff(leaveRequest: LeaveRequest?) {
-        leaveRequest ?: throw IllegalArgumentException("LeaveRequest cannot be null.")
+    fun useTimeOff(
+        requestUserId: Long?,
+        leaveRequestId: Long?,
+        leaveRequestType: LeaveRequestType?,
+        requiredTimeOff: TimeOffDay?
+    ) {
+        requestUserId ?: throw IllegalArgumentException("RequestUserId cannot be null.")
+        leaveRequestId ?: throw IllegalArgumentException("LeaveRequestId cannot be null.")
+        leaveRequestType ?: throw IllegalArgumentException("LeaveRequestType cannot be null.")
+        requiredTimeOff ?: throw IllegalArgumentException("RequiredTimeOff cannot be null.")
 
-        val timeOff = timeOffRepository.findByUserId(leaveRequest.getRequestUserId())
-        timeOff.useTimeOff(leaveRequest, leaveRequest.totalTimeOffDay())
+        val timeOff = timeOffRepository.findByUserId(requestUserId)
+        timeOff.useTimeOff(leaveRequestId, leaveRequestType, requiredTimeOff)
         timeOffRepository.save(timeOff)
     }
 
-    fun undoUseTimeOff(leaveRequest: LeaveRequest?) {
-        leaveRequest ?: throw IllegalArgumentException("LeaveRequest cannot be null.")
+    fun undoUseTimeOff(leaveRequestId: Long?, requestUserId: Long?) {
+        leaveRequestId ?: throw IllegalArgumentException("LeaveRequestId cannot be null.")
+        requestUserId ?: throw IllegalArgumentException("RequestUserId cannot be null.")
 
-        val timeOff = timeOffRepository.findByUserId(leaveRequest.getRequestUserId())
-        timeOff.undoUseTimeOff(leaveRequest.getId())
+        val timeOff = timeOffRepository.findByUserId(requestUserId)
+        timeOff.undoUseTimeOff(leaveRequestId)
         timeOffRepository.save(timeOff)
     }
 

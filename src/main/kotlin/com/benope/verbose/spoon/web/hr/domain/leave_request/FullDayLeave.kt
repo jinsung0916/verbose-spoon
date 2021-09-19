@@ -11,7 +11,7 @@ class FullDayLeave(
     period: LeavePeriod
 ) : LeaveRequestEntity(userId, period) {
 
-    override fun totalTimeOffDay(): TimeOffDay {
+    override fun getTotalTimeOffDay(): TimeOffDay {
         return TimeOffDay(this.getPeriod().daysBetween())
     }
 

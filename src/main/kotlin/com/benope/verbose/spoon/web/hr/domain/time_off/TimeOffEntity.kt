@@ -1,8 +1,8 @@
 package com.benope.verbose.spoon.web.hr.domain.time_off
 
 import com.benope.verbose.spoon.core_backend.common.audit.AuditEntity
-import com.benope.verbose.spoon.web.hr.domain.LeaveRequest
 import com.benope.verbose.spoon.web.hr.domain.TimeOff
+import com.benope.verbose.spoon.web.hr.domain.leave_request.LeaveRequestType
 import com.benope.verbose.spoon.web.hr.exception.TimeOffUnableToDeleteException
 import javax.persistence.*
 
@@ -44,9 +44,14 @@ abstract class TimeOffEntity(
         return this.remainingDays != TimeOffDay.ZERO
     }
 
-    override fun useTimeOff(leaveRequest: LeaveRequest, requiredTimeOffDay: TimeOffDay): TimeOffDay {
+    override fun useTimeOff(
+        leaveRequestId: Long?,
+        leaveRequestType: LeaveRequestType?,
+        requiredTimeOffDay: TimeOffDay?
+    ): TimeOffDay {
+        requiredTimeOffDay ?: throw IllegalArgumentException("RequiredTimeOffDay cannot be null.")
 
-        if (!available() || !supports(leaveRequest)) {
+        if (!available() || !supports(leaveRequestType)) {
             return TimeOffDay.ZERO
         }
 
@@ -54,15 +59,15 @@ abstract class TimeOffEntity(
 
         if (remainingDays == TimeOffDay.ZERO) {
             // 보유 연차로 모든 휴가 신청을 처리한 경우, requiredTimeOffDay 만큼 사용 처리한다.
-            pushHistory(leaveRequest.getId(), requiredTimeOffDay)
+            pushHistory(leaveRequestId, requiredTimeOffDay)
             this.remainingDays = this.remainingDays.minus(requiredTimeOffDay)
         } else {
             // 보유 연차로 모든 휴가 신청을 처리하지 못한 경우, remainingDays 만큼만 사용 처리한다.
-            pushHistory(leaveRequest.getId(), this.remainingDays)
+            pushHistory(leaveRequestId, this.remainingDays)
             this.remainingDays = TimeOffDay.ZERO
         }
 
-        return getTimeOffUsageHistory(leaveRequest.getId()).usedDays
+        return getTimeOffUsageHistory(leaveRequestId).usedDays
     }
 
     private fun pushHistory(applicationId: Long?, usedDays: TimeOffDay) {
