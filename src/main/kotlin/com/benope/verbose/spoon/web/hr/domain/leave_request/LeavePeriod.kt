@@ -1,5 +1,6 @@
 package com.benope.verbose.spoon.web.hr.domain.leave_request
 
+import com.benope.verbose.spoon.web.hr.exception.InvalidLeaveRequestPeriodException
 import java.time.LocalDate
 import javax.persistence.Embeddable
 
@@ -15,7 +16,7 @@ data class LeavePeriod(
 
     private fun initCheck(startDate: LocalDate, endDate: LocalDate) {
         if (startDate.isAfter(endDate)) {
-            throw IllegalArgumentException("StartDate cannot be before endDate.")
+            throw InvalidLeaveRequestPeriodException()
         }
     }
 

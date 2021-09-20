@@ -6,7 +6,6 @@ import com.benope.verbose.spoon.web.hr.dto.CreateLeaveRequestReq
 import com.benope.verbose.spoon.web.hr.dto.DeleteLeaveRequestReq
 import com.benope.verbose.spoon.web.hr.dto.LeaveRequestResp
 import com.benope.verbose.spoon.web.hr.repository.LeaveRequestRepository
-import com.benope.verbose.spoon.web.hr.validation.CreateLeaveRequestReqValidator
 import com.benope.verbose.spoon.web.user.service.UserManageService
 import org.modelmapper.ModelMapper
 import org.springframework.stereotype.Service
@@ -19,14 +18,11 @@ class LeaveRequestService(
     private val leaveRequestRepository: LeaveRequestRepository,
     private val timeOffService: TimeOffService,
     private val userManageService: UserManageService,
-    private val createLeaveRequestReqValidator: CreateLeaveRequestReqValidator,
     private val modelMapper: ModelMapper
 ) {
 
     fun createLeaveRequest(request: CreateLeaveRequestReq?): LeaveRequestResp {
         request ?: throw IllegalArgumentException("CreateLeaveRequestReq cannot be null.")
-
-        createLeaveRequestReqValidator.validate(request)
 
         val leaveRequestEntity = request.toEntity(userManageService)
         val savedEntity = leaveRequestRepository.save(leaveRequestEntity)
