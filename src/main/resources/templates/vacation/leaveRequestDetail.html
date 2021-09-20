@@ -58,13 +58,12 @@
         var TITLE = "휴가 현황";
 
         $(function () {
-            benopeAPI.getSession()
-                .then(getUserId)
-                .then(benopeAPI.findLeaveRequestByUserId)
-                .then(leaveRequestAppender)
-                .catch(function (e) {
-                    benopeUI.confirmModal(TITLE, e.message);
-                });
+            initTimeOff();
+            initLeaveRequest();
+        });
+
+        function initTimeOff() {
+            $('#timeOffTable').empty();
 
             benopeAPI.getSession()
                 .then(getUserId)
@@ -73,7 +72,19 @@
                 .catch(function (e) {
                     benopeUI.confirmModal(TITLE, e.message)
                 });
-        });
+        }
+
+        function initLeaveRequest() {
+            $('#leaveRequestTable').empty();
+
+            benopeAPI.getSession()
+                .then(getUserId)
+                .then(benopeAPI.findLeaveRequestByUserId)
+                .then(leaveRequestAppender)
+                .catch(function (e) {
+                    benopeUI.confirmModal(TITLE, e.message);
+                });
+        }
 
         function getUserId(user) {
             return _.get(user, 'userId');
@@ -117,6 +128,7 @@
                     .then(function () {
                         benopeUI.confirmModal(TITLE, "삭제되었습니다.", null, function () {
                             $(element).closest('tr').remove();
+                            initTimeOff(); // 연차 리스트를 초기화한다.
                         });
                     }).catch(function (e) {
                     benopeUI.confirmModal(TITLE, e.message);
