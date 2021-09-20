@@ -3,8 +3,9 @@ package com.benope.verbose.spoon.web.hr.domain.leave_request
 import com.benope.verbose.spoon.web.hr.dto.CreateLeaveRequestReq
 import com.benope.verbose.spoon.web.user.service.UserManageService
 
-enum class LeaveRequestType {
-    FULL_DAY {
+enum class LeaveRequestType(title: String) {
+
+    FULL_DAY("연차") {
         override fun doGetEntity(leaveRequestDto: CreateLeaveRequestReq): LeaveRequestEntity {
             return FullDayLeave(
                 userId = leaveRequestDto.userId!!,
@@ -15,7 +16,7 @@ enum class LeaveRequestType {
             )
         }
     },
-    HALF_DAY {
+    HALF_DAY("반차") {
         override fun doGetEntity(leaveRequestDto: CreateLeaveRequestReq): LeaveRequestEntity {
             return HalfDayLeave(
                 userId = leaveRequestDto.userId!!,
@@ -26,7 +27,7 @@ enum class LeaveRequestType {
             )
         }
     },
-    SICK {
+    SICK("병가") {
         override fun doGetEntity(leaveRequestDto: CreateLeaveRequestReq): LeaveRequestEntity {
             return SickLeave(
                 userId = leaveRequestDto.userId!!,
@@ -48,4 +49,10 @@ enum class LeaveRequestType {
     }
 
     abstract fun doGetEntity(leaveRequestDto: CreateLeaveRequestReq): LeaveRequestEntity
+
+    var title: String
+
+    init {
+        this.title = title
+    }
 }

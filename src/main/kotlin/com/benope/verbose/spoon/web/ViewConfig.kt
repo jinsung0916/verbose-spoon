@@ -30,6 +30,7 @@ class ViewConfig : WebMvcConfigurer {
         registry.addViewController("/time-off/create").setViewName("/vacation/timeOffCreate")
         registry.addViewController("/leave-request/create").setViewName("/vacation/leaveRequestCreate")
         registry.addViewController("/leave-request/detail").setViewName("/vacation/leaveRequestDetail")
+        registry.addViewController("/leave-request/approval").setViewName("/vacation/leaveRequestApproval")
 
     }
 }

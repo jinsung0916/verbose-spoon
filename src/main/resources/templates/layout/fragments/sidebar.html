@@ -52,7 +52,7 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" th:href="@{/leave-request/detail}">휴가 내역</a>
                     <a class="collapse-item" th:href="@{/leave-request/create}">휴가 신청</a>
-                    <a class="collapse-item" th:href="@{/user/create}" sec:authorize="hasRole('ADMIN') or hasRole('APPROVAL')">휴가 승인</a>
+                    <a class="collapse-item" th:href="@{/leave-request/approval}" sec:authorize="hasRole('ADMIN') or hasRole('APPROVAL')">휴가 승인</a>
                     <a class="collapse-item" th:href="@{/time-off/create}" sec:authorize="hasRole('ADMIN')">연차 관리</a>
                 </div>
             </div>

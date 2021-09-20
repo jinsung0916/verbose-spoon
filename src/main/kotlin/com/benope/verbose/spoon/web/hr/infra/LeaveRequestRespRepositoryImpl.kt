@@ -62,6 +62,7 @@ class LeaveRequestRespRepositoryImpl(
                     "JOIN l.approvalLine a " +
                     "LEFT JOIN User u ON u.userId = l.userId " +
                     "WHERE a.userId = :userId " +
+                    "AND a.isApproved = false " +
                     "AND l.isDeleted = false " +
                     "AND u.isDeleted = false ",
             LeaveRequestResp::class.java

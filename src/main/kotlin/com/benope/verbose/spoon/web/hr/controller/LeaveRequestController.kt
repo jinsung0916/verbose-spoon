@@ -46,7 +46,7 @@ class LeaveRequestController(
 
     @DeleteMapping("/{leaveRequestId}")
     fun deleteLeaveRequest(
-        @PathVariable @NotNull   leaveRequestId: Long?,
+        @PathVariable @NotNull leaveRequestId: Long?,
         @AuthenticationPrincipal user: User?
     ) {
         val deleteLeaveRequestReq = DeleteLeaveRequestReq(
@@ -54,6 +54,23 @@ class LeaveRequestController(
             requestUserId = user?.userId
         )
         leaveRequestService.deleteLeaveRequest(deleteLeaveRequestReq)
+    }
+
+    @GetMapping("/approval/list")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or #approvalUserId == authentication.principal.userId")
+    fun findLeaveRequestByApprovalUserId(
+        @RequestParam @NotNull approvalUserId: Long?
+    ): List<LeaveRequestResp> {
+        return leaveRequestService.findByApprovalLineUserId(approvalUserId)
+    }
+
+    @PostMapping("/approval/{leaveRequestId}")
+    @PreAuthorize("hasRole('ROLE_APPROVAL')")
+    fun approveLeaveRequest(
+        @PathVariable @NotNull leaveRequestId: Long?,
+        @AuthenticationPrincipal user: User?
+    ) {
+        leaveRequestService.approveRequest(leaveRequestId = leaveRequestId, approveUserId = user?.userId)
     }
 
 }

@@ -178,6 +178,34 @@ var benopeAPI = benopeAPI || (function ($) {
                 });
             });
         },
+
+        findLeaveRequestByApprovalUserId: function (approvalUserId) {
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: "/api/v1/leave-request/approval/list",
+                    method: "GET",
+                    acceptType: "json",
+                    data: {
+                        approvalUserId: approvalUserId
+                    },
+                    success: resolve,
+                    error: _.partial(handleAjaxError, _, reject)
+                });
+            });
+        },
+
+        approveLeaveRequest: function (leaveRequestId) {
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: "/api/v1/leave-request/approval/" + leaveRequestId,
+                    method: "POST",
+                    contentType: "application/json",
+                    acceptType: "json",
+                    success: resolve,
+                    error: _.partial(handleAjaxError, _, reject)
+                });
+            });
+        },
     }
 
     function handleAjaxError(xhr, reject) {
