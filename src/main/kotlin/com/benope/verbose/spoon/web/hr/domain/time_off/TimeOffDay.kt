@@ -1,5 +1,6 @@
 package com.benope.verbose.spoon.web.hr.domain.time_off;
 
+import com.benope.verbose.spoon.web.hr.exception.InvalidTimeOffDayException
 import javax.persistence.Embeddable
 
 @Embeddable
@@ -11,7 +12,7 @@ data class TimeOffDay(
 
     init {
         if (days < 0) throw  IllegalArgumentException("TimeOffDay value cannot be less than zero. (value: $days)")
-        if ((days.rem(0.5)) != 0.0) throw  IllegalArgumentException("TimeOffDay value is invalid: $days")
+        if ((days.rem(0.5)) != 0.0) throw  InvalidTimeOffDayException()
     }
 
     companion object {
