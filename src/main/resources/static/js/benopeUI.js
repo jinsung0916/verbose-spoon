@@ -28,7 +28,7 @@ var benopeUI = benopeUI || (function () {
 
         function getModalHtml(object) {
             return Handlebars.compile(
-                "<div class='modal fade' tabindex='-1' role='dialog' aria-labelledby='updateModalLabel' aria-hidden='true'>" +
+                "<div class='modal fade' tabindex='-1' role='dialog' aria-labelledby='updateModalLabel' aria-hidden='true' data-backdrop='static' data-keyboard='false'>" +
                 "    <div class='modal-dialog' role='document'>" +
                 "        <div class='modal-content'>" +
                 "            <div class='modal-header'>" +
@@ -74,7 +74,7 @@ var benopeUI = benopeUI || (function () {
 
         function getModalHtml() {
             var html =
-                "<div class='modal fade' tabindex='-1' role='dialog' aria-labelledby='updateModalLabel' aria-hidden='true'>" +
+                "<div class='modal fade' tabindex='-1' role='dialog' aria-labelledby='updateModalLabel' aria-hidden='true' data-backdrop='static' data-keyboard='false'>" +
                 "    <div class='modal-dialog' role='document'>" +
                 "        <div class='modal-content'>" +
                 "            <div class='modal-header'>" +
