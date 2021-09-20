@@ -6,8 +6,8 @@ import com.benope.verbose.spoon.web.hr.dto.CreateLeaveRequestReq
 import com.benope.verbose.spoon.web.hr.dto.DeleteLeaveRequestReq
 import com.benope.verbose.spoon.web.hr.dto.LeaveRequestResp
 import com.benope.verbose.spoon.web.hr.repository.LeaveRequestRepository
+import com.benope.verbose.spoon.web.hr.repository.LeaveRequestRespRepository
 import com.benope.verbose.spoon.web.user.service.UserManageService
-import org.modelmapper.ModelMapper
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 import javax.transaction.Transactional
@@ -16,9 +16,9 @@ import javax.transaction.Transactional
 @Transactional
 class LeaveRequestService(
     private val leaveRequestRepository: LeaveRequestRepository,
+    private val leaveRequestRespRepository: LeaveRequestRespRepository,
     private val timeOffService: TimeOffService,
-    private val userManageService: UserManageService,
-    private val modelMapper: ModelMapper
+    private val userManageService: UserManageService
 ) {
 
     fun createLeaveRequest(request: CreateLeaveRequestReq?): LeaveRequestResp {
@@ -34,17 +34,15 @@ class LeaveRequestService(
             leaveRequestEntity.getTotalTimeOffDay()
         )
 
-        return toLeaveRequestResp(savedEntity)
+        return LeaveRequestResp(savedEntity, null)
     }
 
     fun findByUserId(userId: Long?): List<LeaveRequestResp> {
-        return leaveRequestRepository.findByUserId(userId)
-            .map(this::toLeaveRequestResp)
+        return leaveRequestRespRepository.findByUserId(userId)
     }
 
     fun findByApprovalLineUserId(approveUserId: Long?): List<LeaveRequestResp> {
-        return leaveRequestRepository.findByApprovalLineUserId(approveUserId)
-            .map(this::toLeaveRequestResp)
+        return leaveRequestRespRepository.findByApprovalLineUserId(approveUserId)
     }
 
     private fun findById(leaveRequestId: Long?): LeaveRequestEntity {
@@ -57,9 +55,8 @@ class LeaveRequestService(
         startDate ?: throw IllegalArgumentException("StartDate cannot be null.")
         endDate ?: throw IllegalArgumentException("EndDate cannot be null.")
 
-        return leaveRequestRepository.findAllByPeriod(startDate, endDate)
-            .filter { it.isApproved() }
-            .map(this::toLeaveRequestResp)
+        return leaveRequestRespRepository.findAllByPeriod(startDate, endDate)
+            .filter { it.isApproved ?: false }
     }
 
     fun deleteLeaveRequest(request: DeleteLeaveRequestReq?) {
@@ -81,12 +78,6 @@ class LeaveRequestService(
         val leaveRequest = findById(leaveRequestId)
         leaveRequest.approveRequest(approveUserId)
         leaveRequestRepository.save(leaveRequest)
-    }
-
-    private fun toLeaveRequestResp(leaveRequestEntity: LeaveRequestEntity): LeaveRequestResp {
-        val leaveRequestResp = modelMapper.map(leaveRequestEntity, LeaveRequestResp::class.java)
-        leaveRequestResp.isApproved = leaveRequestEntity.isApproved()
-        return leaveRequestResp
     }
 
 }

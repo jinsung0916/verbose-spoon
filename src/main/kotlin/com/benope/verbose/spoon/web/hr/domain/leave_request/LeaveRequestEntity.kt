@@ -28,7 +28,8 @@ abstract class LeaveRequestEntity(
     @AttributeOverrides(
         value = [AttributeOverride(name = "userId", column = Column(name = "approval_authority"))]
     )
-    private var approvalLine: MutableList<ApprovalLine> = mutableListOf()
+    open var approvalLine: MutableList<ApprovalLine> = mutableListOf()
+        protected set
 
     fun getId(): Long? {
         return this.leaveRequestId
@@ -38,7 +39,7 @@ abstract class LeaveRequestEntity(
         return this.userId
     }
 
-    protected open fun getPeriod(): LeavePeriod {
+    open fun getPeriod(): LeavePeriod {
         return this.period
     }
 
