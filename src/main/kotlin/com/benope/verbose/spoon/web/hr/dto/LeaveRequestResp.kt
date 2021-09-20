@@ -10,8 +10,9 @@ data class LeaveRequestResp private constructor(
     var userId: Long?,
     var startDate: LocalDate?,
     var endDate: LocalDate?,
+    var days: Double?,
     var approvalLine: List<ApprovalLine>?,
     var isApproved: Boolean?
 ) {
-    constructor() : this(null, null, null, null, null, null, null)
+    constructor() : this(null, null, null, null, null, null, null, null)
 }

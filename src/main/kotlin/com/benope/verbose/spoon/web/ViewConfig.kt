@@ -29,6 +29,7 @@ class ViewConfig : WebMvcConfigurer {
         // 휴가 관리
         registry.addViewController("/time-off/create").setViewName("/vacation/timeOffCreate")
         registry.addViewController("/leave-request/create").setViewName("/vacation/leaveRequestCreate")
+        registry.addViewController("/leave-request/detail").setViewName("/vacation/leaveRequestDetail")
 
     }
 }

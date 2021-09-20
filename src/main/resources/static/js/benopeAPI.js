@@ -1,6 +1,18 @@
 var benopeAPI = benopeAPI || (function ($) {
 
     return {
+        getSession: function () {
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: "/api/v1/session",
+                    method: "GET",
+                    acceptType: "json",
+                    success: resolve,
+                    error: _.partial(handleAjaxError, _, reject)
+                });
+            });
+        },
+
         findUserList: function (page = 0, size = 100) {
             return new Promise(function (resolve, reject) {
                 $.ajax({
@@ -138,7 +150,34 @@ var benopeAPI = benopeAPI || (function ($) {
                     error: _.partial(handleAjaxError, _, reject)
                 });
             });
-        }
+        },
+
+        findLeaveRequestByUserId: function (userId) {
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: "/api/v1/leave-request/list",
+                    method: "GET",
+                    data: {
+                        userId: userId
+                    },
+                    acceptType: "json",
+                    success: resolve,
+                    error: _.partial(handleAjaxError, _, reject)
+                });
+            });
+        },
+
+        deleteLeaveRequest: function (leaveRequestId) {
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: "/api/v1/leave-request/" + leaveRequestId,
+                    method: "DELETE",
+                    acceptType: "json",
+                    success: resolve,
+                    error: _.partial(handleAjaxError, _, reject)
+                });
+            });
+        },
     }
 
     function handleAjaxError(xhr, reject) {
