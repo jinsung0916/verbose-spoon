@@ -51,6 +51,7 @@
             <div aria-labelledby="headingTwo" class="collapse" data-parent="#accordionSidebar" id="collapseTwo">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" th:href="@{/user/list}">휴가 현황</a>
+                    <a class="collapse-item" th:href="@{/leave-request/create}">휴가 신청</a>
                     <a class="collapse-item" th:href="@{/user/create}" sec:authorize="hasRole('ADMIN') or hasRole('APPROVAL')">휴가 승인</a>
                     <a class="collapse-item" th:href="@{/time-off/create}" sec:authorize="hasRole('ADMIN')">연차 관리</a>
                 </div>

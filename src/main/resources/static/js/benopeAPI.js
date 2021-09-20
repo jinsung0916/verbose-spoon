@@ -124,6 +124,20 @@ var benopeAPI = benopeAPI || (function ($) {
                     error: _.partial(handleAjaxError, _, reject)
                 });
             });
+        },
+
+        createLeaveRequest: function (request) {
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: "/api/v1/leave-request",
+                    method: "PUT",
+                    contentType: "application/json",
+                    acceptType: "json",
+                    data: JSON.stringify(request),
+                    success: resolve,
+                    error: _.partial(handleAjaxError, _, reject)
+                });
+            });
         }
     }
 
