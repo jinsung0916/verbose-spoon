@@ -39,9 +39,9 @@ class TimeOffRepositoryImpl(
         val entityList = timeOff.toEntityList().stream()
             .map {
                 if (em.contains(it)) {
-                    persist(it)
-                } else {
                     merge(it)
+                } else {
+                    persist(it)
                 }
             }.toList()
         return DelegatingTimeOff(entityList, timeOffComparator)
