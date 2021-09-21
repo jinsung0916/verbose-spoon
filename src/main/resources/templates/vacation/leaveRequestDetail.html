@@ -110,10 +110,10 @@
             function getHtml(timeOff) {
                 var html =
                     "<tr>" +
-                    "   <td>{{type}}</td>" +
+                    "   <td>{{typeExplained}}</td>" +
                     "   <td>{{startDate}} ~ {{endDate}}</td>" +
                     "   <td>{{days}} 일</td>" +
-                    "   <td>{{isApproved}}</td>" +
+                    "   {{#if isApproved}}<td class='text-success'>승인</td>{{else}}<td class='text-danger'>미승인</td>{{/if}}" +
                     "   <td class='text-center align-middle'>" +
                     "       <div class='btn-group align-top'>" +
                     "           <button class='btn btn-sm btn-outline-secondary badge'><i class='fa fa-trash'></i></button>" +
