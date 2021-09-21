@@ -185,6 +185,8 @@
                           th:if="${#authorization.expression('hasRole(''USER'')')}">일반</span>
                     <span class="badge badge-danger mr-2"
                           th:if="${#authorization.expression('hasRole(''ADMIN'')')}">관리자</span>
+                    <span class="badge badge-success mr-2"
+                          th:if="${#authorization.expression('hasRole(''APPROVAL'')')}">승인권자</span>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                          class="bi bi-person-circle" viewBox="0 0 16 16">
                         <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
