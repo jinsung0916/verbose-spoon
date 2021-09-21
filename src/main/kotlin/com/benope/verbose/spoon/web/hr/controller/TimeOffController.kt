@@ -8,7 +8,6 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.validation.BindingResult
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
-import javax.validation.Valid
 import javax.validation.constraints.NotNull
 
 @RestController
@@ -21,7 +20,7 @@ class TimeOffController(
     @PutMapping("/")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun createTimeOff(
-        @RequestBody @Valid createTimeOffRequest: CreateTimeOffRequest,
+        @RequestBody @Validated createTimeOffRequest: CreateTimeOffRequest,
         errors: BindingResult
     ): TimeOffResponse {
         if (errors.hasErrors()) {

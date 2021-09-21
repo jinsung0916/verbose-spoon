@@ -11,7 +11,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.validation.BindingResult
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
-import javax.validation.Valid
 import javax.validation.constraints.NotNull
 
 @RestController
@@ -23,7 +22,7 @@ class LeaveRequestController(
 
     @PutMapping
     fun createLeaveRequest(
-        @RequestBody @Valid createLeaveRequestReq: CreateLeaveRequestReq,
+        @RequestBody @Validated createLeaveRequestReq: CreateLeaveRequestReq,
         errors: BindingResult,
         @AuthenticationPrincipal user: User
     ): LeaveRequestResp {
