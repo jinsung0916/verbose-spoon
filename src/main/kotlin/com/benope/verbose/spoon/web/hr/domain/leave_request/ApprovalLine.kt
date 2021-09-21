@@ -4,12 +4,16 @@ import com.benope.verbose.spoon.core_backend.security.domain.Role
 import com.benope.verbose.spoon.core_backend.security.domain.User
 import com.benope.verbose.spoon.web.hr.exception.ApprovalLineNotAuthorizedException
 import java.time.LocalDateTime
+import javax.persistence.Column
 import javax.persistence.Embeddable
 
 @Embeddable
 data class ApprovalLine private constructor(
+    @field:Column(nullable = false)
     var userId: Long?,
+    @field:Column(nullable = false)
     var isApproved: Boolean = false,
+    @field:Column(nullable = false)
     var approveDateTime: LocalDateTime? = null
 ) {
     companion object {

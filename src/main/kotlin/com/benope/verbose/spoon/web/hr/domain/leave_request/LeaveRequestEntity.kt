@@ -29,7 +29,7 @@ abstract class LeaveRequestEntity(
         joinColumns = [JoinColumn(name = "leave_request_id")]
     )
     @AttributeOverrides(
-        value = [AttributeOverride(name = "userId", column = Column(name = "approval_authority"))]
+        value = [AttributeOverride(name = "userId", column = Column(name = "approval_authority", nullable = false))]
     )
     open var approvalLine: MutableList<ApprovalLine> = mutableListOf()
         protected set

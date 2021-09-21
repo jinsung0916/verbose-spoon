@@ -1,10 +1,12 @@
 package com.benope.verbose.spoon.web.hr.domain.time_off;
 
 import com.benope.verbose.spoon.web.hr.exception.InvalidTimeOffDayException
+import javax.persistence.Column
 import javax.persistence.Embeddable
 
 @Embeddable
 data class TimeOffDay(
+    @field:Column(nullable = false)
     var days: Double
 ) {
 

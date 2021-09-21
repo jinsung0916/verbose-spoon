@@ -83,14 +83,14 @@ abstract class TimeOffEntity(
 
     private fun getTimeOffUsageHistory(applicationId: Long?): TimeOffUsageHistory {
         return this.timeOffUsageHistory.stream()
-            .filter { it.getId() == applicationId }
+            .filter { it.leaveApplicationId == applicationId }
             .findAny()
             .get()
     }
 
     override fun undoUseTimeOff(canceledApplicationId: Long?) {
         val usedDays = timeOffUsageHistory.stream()
-            .filter { it.getId() == canceledApplicationId }
+            .filter { it.leaveApplicationId == canceledApplicationId }
             .findAny()
             .map { it.undoHistory() }
             .orElse(TimeOffDay.ZERO)

@@ -1,19 +1,16 @@
 package com.benope.verbose.spoon.web.hr.domain.time_off
 
+import javax.persistence.Column
 import javax.persistence.Embeddable
-import javax.persistence.Transient
 
 @Embeddable
 data class TimeOffUsageHistory(
+    @field:Column(nullable = false)
     var leaveApplicationId: Long?,
     var usedDays: TimeOffDay,
+    @field:Column(nullable = false)
     var isCanceled: Boolean = false
 ) {
-
-    @Transient
-    fun getId(): Long? {
-        return this.leaveApplicationId
-    }
 
     fun undoHistory(): TimeOffDay {
         this.isCanceled = true
