@@ -106,7 +106,7 @@ private val URLS_NOT_AUTHENTICATED = arrayOf(
 )
 
 private val IS_APPLICATION_JSON: (HttpServletRequest) -> Boolean = { request ->
-    request.contentType == "application/json"
+    request.contentType == "application/json" || request.method == "PUT" || request.method == "DELETE"
 }
 
 private val IS_NOT_APPLICATION_JSON: (HttpServletRequest) -> Boolean = { request ->
