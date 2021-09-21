@@ -44,8 +44,8 @@ class LeaveRequestRespRepositoryImpl(
             "SELECT new com.benope.verbose.spoon.web.hr.dto.LeaveRequestResp(l, u) " +
                     "FROM LeaveRequestEntity l " +
                     "LEFT JOIN User u ON u.userId = l.userId " +
-                    "WHERE l.period.startDate >= :startDate " +
-                    "AND l.period.startDate <= :endDate " +
+                    "WHERE l.period.startDate BETWEEN :startDate AND :endDate " +
+                    "AND l.period.endDate BETWEEN :startDate AND :endDate " +
                     "AND l.isDeleted = false " +
                     "AND u.isDeleted = false ",
             LeaveRequestResp::class.java

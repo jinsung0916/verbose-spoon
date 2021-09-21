@@ -6,11 +6,13 @@ import com.benope.verbose.spoon.web.hr.dto.CreateLeaveRequestReq
 import com.benope.verbose.spoon.web.hr.dto.DeleteLeaveRequestReq
 import com.benope.verbose.spoon.web.hr.dto.LeaveRequestResp
 import com.benope.verbose.spoon.web.hr.service.LeaveRequestService
+import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.validation.BindingResult
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
+import java.time.LocalDate
 import javax.validation.constraints.NotNull
 
 @RestController
@@ -71,6 +73,14 @@ class LeaveRequestController(
         @AuthenticationPrincipal user: User?
     ) {
         leaveRequestService.approveRequest(leaveRequestId = leaveRequestId, approveUserId = user?.userId)
+    }
+
+    @GetMapping("/list/approved")
+    fun findAllApproved(
+        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") @NotNull startDate: LocalDate?,
+        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") @NotNull endDate: LocalDate?
+    ): List<LeaveRequestResp> {
+        return leaveRequestService.findAllApproved(startDate, endDate)
     }
 
 }

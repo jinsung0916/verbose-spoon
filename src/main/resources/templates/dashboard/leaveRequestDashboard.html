@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="~{layout/layout}">
+<head>
+    <style>
+        #calendar {
+            /* 		float: right; */
+            margin: 0 auto;
+            width: 1100px;
+            background-color: #FFFFFF;
+            border-radius: 6px;
+            box-shadow: 0 1px 2px #C3C3C3;
+        }
+    </style>
+</head>
+
+<th:block layout:fragment="content">
+    <div id='calendar'></div>
+
+    <script>
+        var TITLE = "Dashboard";
+        var calendar = undefined;
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var initialLocaleCode = 'ko';
+            var calendarEl = document.getElementById('calendar');
+
+            calendar = new FullCalendar.Calendar(calendarEl, {
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+                },
+                locale: initialLocaleCode,
+                buttonIcons: false, // show the prev/next text
+                navLinks: true, // can click day/week names to navigate views
+                // editable: true,
+                dayMaxEvents: true, // allow "more" link when too many events
+            });
+
+            calendar.render();
+        });
+
+        $(function () {
+            init();
+        });
+
+        $('body').on('click', 'button.fc-prev-button', function () {
+            init()
+        });
+
+        $('body').on('click', 'button.fc-next-button', function () {
+            init()
+        });
+
+        function init() {
+            var startDate = calendar.view.activeStart;
+            var endDate = calendar.view.activeEnd;
+
+            eventAppender(startDate, endDate);
+        }
+
+        function eventAppender(startDate, endDate) {
+            benopeAPI.findApprovedLeaveRequest(startDate, endDate)
+                .then(toEventSource)
+                .then(append)
+                .catch(function (e) {
+                    benopeUI.confirmModal(TITLE, e.message);
+                });
+
+            function toEventSource(list) {
+                return Promise.resolve(
+                    _.chain(list)
+                        .map(toEvent)
+                        .value());
+            }
+
+            function toEvent(leaveRequest) {
+                return {
+                    title: "[" + leaveRequest.typeExplained + "] " + leaveRequest.nickname,
+                    start: leaveRequest.startDate,
+                    end: parseEndDate(leaveRequest.endDate),
+                }
+            }
+
+            function parseEndDate(endDate) {
+                var date = new Date(endDate);
+                date.setDate(date.getDate() + 1);
+                return date.toISOString().split('T')[0];
+            }
+
+            function append(eventSource) {
+                calendar.removeAllEvents();
+                calendar.addEventSource(eventSource);
+            }
+        }
+    </script>
+</th:block>
+
+</html>

@@ -17,7 +17,7 @@ import javax.validation.constraints.NotBlank
 class ViewConfig : WebMvcConfigurer {
     override fun addViewControllers(registry: ViewControllerRegistry) {
         // main page
-        registry.addViewController("/").setViewName("index")
+        registry.addViewController("/").setViewName("/dashboard/leaveRequestDashboard")
 
         // dashboard
         registry.addViewController("/dashboard").setViewName("index")

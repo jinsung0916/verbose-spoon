@@ -206,6 +206,22 @@ var benopeAPI = benopeAPI || (function ($) {
                 });
             });
         },
+
+        findApprovedLeaveRequest: function (startDate, endDate) {
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: "/api/v1/leave-request/list/approved",
+                    method: "GET",
+                    acceptType: "json",
+                    data: {
+                        startDate: startDate.toISOString().split('T')[0],
+                        endDate: endDate.toISOString().split('T')[0]
+                    },
+                    success: resolve,
+                    error: _.partial(handleAjaxError, _, reject)
+                });
+            });
+        },
     }
 
     function handleAjaxError(xhr, reject) {
