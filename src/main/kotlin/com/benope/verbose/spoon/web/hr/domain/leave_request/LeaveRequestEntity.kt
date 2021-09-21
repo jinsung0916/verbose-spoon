@@ -17,14 +17,17 @@ abstract class LeaveRequestEntity(
     private var userId: Long,
     @Embedded
     private var period: LeavePeriod
-) :  AuditEntity<LeaveRequestEntity>() {
+) : AuditEntity<LeaveRequestEntity>() {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private var leaveRequestId: Long? = null
 
     @ElementCollection
-    @CollectionTable(name = "leave_request_approval_line")
+    @CollectionTable(
+        name = "leave_request_approval_line",
+        joinColumns = [JoinColumn(name = "leave_request_id")]
+    )
     @AttributeOverrides(
         value = [AttributeOverride(name = "userId", column = Column(name = "approval_authority"))]
     )
