@@ -37,34 +37,18 @@
                 navLinks: true, // can click day/week names to navigate views
                 // editable: true,
                 dayMaxEvents: true, // allow "more" link when too many events
+                events: function (info, successCallback) {
+                    return eventAppender(info.start, info.end, successCallback);
+                }
             });
 
             calendar.render();
         });
 
-        $(function () {
-            init();
-        });
-
-        $('body').on('click', 'button.fc-prev-button', function () {
-            init()
-        });
-
-        $('body').on('click', 'button.fc-next-button', function () {
-            init()
-        });
-
-        function init() {
-            var startDate = calendar.view.activeStart;
-            var endDate = calendar.view.activeEnd;
-
-            eventAppender(startDate, endDate);
-        }
-
-        function eventAppender(startDate, endDate) {
+        function eventAppender(startDate, endDate, successCallback) {
             benopeAPI.findApprovedLeaveRequest(startDate, endDate)
                 .then(toEventSource)
-                .then(append)
+                .then(successCallback)
                 .catch(function (e) {
                     benopeUI.confirmModal(TITLE, e.message);
                 });
@@ -88,11 +72,6 @@
                 var date = new Date(endDate);
                 date.setDate(date.getDate() + 1);
                 return date.toISOString().split('T')[0];
-            }
-
-            function append(eventSource) {
-                calendar.removeAllEvents();
-                calendar.addEventSource(eventSource);
             }
         }
     </script>
