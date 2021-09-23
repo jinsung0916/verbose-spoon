@@ -68,7 +68,11 @@
 
                     benopeAPI.updateUser(username, updateUserRequest)
                         .then(function () {
-                            benopeUI.confirmModal('사용자 수정', '수정되었습니다.');
+                            benopeUI.confirmModal('사용자 수정', '수정되었습니다.', function () {
+                                location.reload();
+                            }, function () {
+                                location.reload();
+                            });
                         }).catch(function (e) {
                         benopeUI.confirmModal('사용자 수정', e.message)
                     });

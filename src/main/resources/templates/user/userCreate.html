@@ -78,7 +78,11 @@
                     isValidPassword() &&
                     benopeAPI.createUser(createUserRequest)
                         .then(function () {
-                            benopeUI.confirmModal('사용자 생성', '생성되었습니다.');
+                            benopeUI.confirmModal('사용자 생성', '생성되었습니다.', function () {
+                                location.reload();
+                            }, function () {
+                                location.reload();
+                            });
                         }).catch(function (e) {
                         benopeUI.confirmModal('사용자 생성', e.message)
                     });

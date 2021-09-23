@@ -52,17 +52,10 @@
         $(function () {
 
             benopeAPI.findUserList()
-                .then(function (data) {
-                    _.chain(data)
-                        .get('content')
-                        .filter(function (user) {
-                            return _.some(user.authority, (it) => it == 'ROLE_APPROVAL')
-                        }).forEach(function (user) {
-                        $('#approvalLine').append('<option value="' + user.userId + '">' + user.nickname + '</option>')
-                    }).value();
-                }).catch(function (e) {
-                benopeUI.confirmModal(TITLE, e.message);
-            });
+                .then(userListIter)
+                .catch(function (e) {
+                    benopeUI.confirmModal(TITLE, e.message);
+                });
 
             $('#createForm').on('submit', function (e) {
                 e.preventDefault();
@@ -75,7 +68,9 @@
                         approvalLine: [$('#approvalLine').val(),]
                     }).then(function () {
                         benopeUI.confirmModal(TITLE, "생성되었습니다.", function () {
-                            location.reload()
+                            location.reload();
+                        }, function () {
+                            location.reload();
                         });
                     }).catch(function (e) {
                         benopeUI.confirmModal(TITLE, e.message);
@@ -83,6 +78,16 @@
                 });
             })
         });
+
+        function userListIter(data) {
+            _.chain(data)
+                .get('content')
+                .filter(function (user) {
+                    return _.some(user.authority, (it) => it == 'ROLE_APPROVAL')
+                }).forEach(function (user) {
+                $('#approvalLine').append('<option value="' + user.userId + '">' + user.nickname + '</option>')
+            }).value();
+        }
 
     </script>
 </th:block>
