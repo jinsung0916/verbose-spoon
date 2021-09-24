@@ -1,5 +1,6 @@
 package com.benope.verbose.spoon.web.hr.domain.time_off
 
+import com.benope.verbose.spoon.web.hr.exception.InvalidValidityPeriodException
 import java.time.LocalDate
 import javax.persistence.Embeddable
 
@@ -15,7 +16,7 @@ data class ValidityPeriod(
 
     private fun initCheck(startDate: LocalDate, endDate: LocalDate) {
         if (startDate.isAfter(endDate)) {
-            throw IllegalArgumentException("StartDate cannot be before endDate.")
+            throw InvalidValidityPeriodException()
         }
     }
 
