@@ -1,9 +1,9 @@
 package com.benope.verbose.spoon.core_backend.common.exception;
 
-import org.apache.tomcat.util.buf.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.thymeleaf.util.StringUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
