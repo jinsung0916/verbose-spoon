@@ -11294,7 +11294,7 @@ a:focus {
 }
 
 .sidebar .sidebar-brand .sidebar-brand-text {
-  display: none;
+  /*display: none;*/
 }
 
 .sidebar hr.sidebar-divider {
@@ -11471,7 +11471,7 @@ a:focus {
   }
 
   .sidebar.toggled .sidebar-brand .sidebar-brand-text {
-    display: none;
+    /*display: none;*/
   }
 
   .sidebar.toggled .sidebar-heading {
