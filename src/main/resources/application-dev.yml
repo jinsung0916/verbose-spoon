@@ -36,6 +36,7 @@ server:
   error:
     whitelabel:
       enabled: false
+    include-message: always
 
 management:
   endpoints:

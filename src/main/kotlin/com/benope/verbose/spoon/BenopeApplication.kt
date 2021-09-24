@@ -3,6 +3,7 @@ package com.benope.verbose.spoon;
 import com.benope.verbose.spoon.web.user.dto.CreateUserRequest
 import com.benope.verbose.spoon.web.user.service.UserManageService
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.builder.SpringApplicationBuilder
 import org.springframework.boot.runApplication
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.Configuration
@@ -14,9 +15,13 @@ import javax.annotation.PostConstruct
 @EnableJpaAuditing
 class BenopeApplication : SpringBootServletInitializer() {
 
+    override fun configure(builder: SpringApplicationBuilder): SpringApplicationBuilder {
+        return builder.sources(BenopeApplication::class.java)
+    }
+
     @Configuration
     @Profile("local")
-    class IntegrationTestPostConstruct(
+    class LocalProfilePostConstruct(
         private val userManageService: UserManageService
     ) {
 
