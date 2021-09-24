@@ -226,7 +226,9 @@
     <script>
         $('#logoutBtn').on('click', function () {
             benopeUI.confirmModal("로그아웃", "로그아웃 하시겠습니까?", function () {
-                location.href = '/logout';
+                $.post('logout', function () {
+                    location.reload();
+                });
             });
         })
     </script>
