@@ -41,7 +41,7 @@ class User(
         name = "user_role",
         joinColumns = [JoinColumn(name = "user_id")],
     )
-    @Column(name = "role_id")
+    @Column(name = "role_id", nullable = false)
     private var authorities: MutableSet<String> = mutableSetOf()
 
     @Embedded

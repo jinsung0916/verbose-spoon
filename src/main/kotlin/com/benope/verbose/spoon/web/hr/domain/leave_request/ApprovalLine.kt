@@ -11,9 +11,7 @@ import javax.persistence.Embeddable
 data class ApprovalLine private constructor(
     @field:Column(nullable = false)
     var userId: Long?,
-    @field:Column(nullable = false)
     var isApproved: Boolean = false,
-    @field:Column(nullable = false)
     var approveDateTime: LocalDateTime? = null
 ) {
     companion object {
@@ -38,4 +36,20 @@ data class ApprovalLine private constructor(
             throw ApprovalLineNotAuthorizedException()
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as ApprovalLine
+
+        if (userId != other.userId) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return userId?.hashCode() ?: 0
+    }
+
 }

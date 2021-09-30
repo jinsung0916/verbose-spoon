@@ -8,7 +8,6 @@ data class TimeOffUsageHistory(
     @field:Column(nullable = false)
     var leaveApplicationId: Long?,
     var usedDays: TimeOffDay,
-    @field:Column(nullable = false)
     var isCanceled: Boolean = false
 ) {
 
