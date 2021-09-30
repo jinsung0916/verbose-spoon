@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository
+import org.thymeleaf.util.StringUtils
 import java.util.concurrent.TimeUnit
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -106,7 +107,7 @@ private val URLS_NOT_AUTHENTICATED = arrayOf(
 )
 
 private val IS_APPLICATION_JSON: (HttpServletRequest) -> Boolean = { request ->
-    request.contentType == "application/json" || request.method == "PUT" || request.method == "DELETE"
+    StringUtils.contains(request.requestURI, "/api/")
 }
 
 private val IS_NOT_APPLICATION_JSON: (HttpServletRequest) -> Boolean = { request ->
