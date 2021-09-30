@@ -48,4 +48,35 @@ class TimeOffServiceTest(
         assertThat(response.remainingDays).isEqualTo(createTimeOffRequest.remainingDays)
     }
 
+    @Test
+    @DisplayName("모든 연차 목록을 조회한다.")
+    fun findAllTimeOffTest() {
+
+        timeOffService.createTimeOff(
+            CreateTimeOffRequest(
+                type = TimeOffType.PAID,
+                userId = user?.userId,
+                startDate = LocalDate.now(),
+                endDate = LocalDate.now().plusYears(1),
+                remainingDays = 10.0,
+                reason = "연차"
+            )
+        )
+
+        timeOffService.createTimeOff(
+            CreateTimeOffRequest(
+                type = TimeOffType.PAID,
+                userId = admin?.userId,
+                startDate = LocalDate.now(),
+                endDate = LocalDate.now().plusYears(1),
+                remainingDays = 10.0,
+                reason = "연차"
+            )
+        )
+
+        val list = timeOffService.findAllTimeOff()
+
+        assertThat(list.size).isEqualTo(2)
+    }
+
 }

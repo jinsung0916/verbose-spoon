@@ -12,7 +12,7 @@ import javax.persistence.*
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 abstract class TimeOffEntity(
 
-    private var userId: Long,
+    open var userId: Long,
 
     @Embedded
     open var validityPeriod: ValidityPeriod,
