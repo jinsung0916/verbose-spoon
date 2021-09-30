@@ -22,6 +22,7 @@
                 <table class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                     <tr>
+                        <td>사용자</td>
                         <td>사유</td>
                         <td>사용 연차</td>
                         <td>잔여 연차</td>
@@ -52,18 +53,22 @@
                     benopeUI.confirmModal(TITLE, e.message)
                 });
 
-            $('#selectBox').on('change', function () {
-                $('#table').empty();
 
+            $('#selectBox').on('change', function () {
                 var userId = $(this).val();
 
-                userId &&
-                benopeAPI.findTimeOffByUserId(userId)
-                    .then(TimeOffTableAppenderWrapper)
-                    .catch(function (e) {
-                        benopeUI.confirmModal(TITLE, e.message)
-                    });
-            });
+                userId ?
+                    benopeAPI.findTimeOffByUserId(userId)
+                        .then(TimeOffTableAppenderWrapper)
+                        .catch(function (e) {
+                            benopeUI.confirmModal(TITLE, e.message)
+                        }) :
+                    benopeAPI.findAllTimeOff()
+                        .then(TimeOffTableAppenderWrapper)
+                        .catch(function (e) {
+                            benopeUI.confirmModal(TITLE, e.message)
+                        });
+            }).change();
 
             $('#createBtn').on('click', function () {
                 var userId = $('#selectBox').val();
@@ -71,7 +76,10 @@
                 userId &&
                 benopeUI.createTimeOffModal(userId)
                     .then(benopeAPI.createTimeOff)
-                    .then(timeOffTableAppender)
+                    .then(function () {
+                        return benopeAPI.findTimeOffByUserId(userId)
+                    })
+                    .then(TimeOffTableAppenderWrapper)
                     .catch(function (e) {
                         benopeUI.confirmModal(TITLE, e.message);
                     });
@@ -89,6 +97,8 @@
         }
 
         function TimeOffTableAppenderWrapper(list) {
+            $('#table').empty();
+
             _.forEach(list, timeOffTableAppender);
         }
 
@@ -109,6 +119,7 @@
             function getHtml(timeOff) {
                 var html =
                     "<tr>" +
+                    "   <td>{{user.nickname}}</td>" +
                     "   <td>{{reason}}</td>" +
                     "   <td>{{usedDays}}일</td>" +
                     "   <td>{{remainingDays}}일</td>" +

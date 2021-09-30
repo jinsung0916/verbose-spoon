@@ -18,7 +18,7 @@ class TimeOffResponseRepositoryImpl(
                         "JOIN User u ON u.userId = t.userId " +
                         "WHERE t.isDeleted = false " +
                         "  AND u.isDeleted = false " +
-                        "ORDER BY u.userId ",
+                        "ORDER BY u.userId, t.validityPeriod.startDate ",
                 TimeOffResponse::class.java
             )
 
@@ -33,7 +33,8 @@ class TimeOffResponseRepositoryImpl(
                         "JOIN User u ON u.userId = t.userId " +
                         "WHERE t.isDeleted = false " +
                         "  AND u.userId = :userId " +
-                        "  AND u.isDeleted = false ",
+                        "  AND u.isDeleted = false " +
+                        "ORDER BY t.validityPeriod.startDate ",
                 TimeOffResponse::class.java
             )
 

@@ -100,11 +100,23 @@ var benopeAPI = benopeAPI || (function ($) {
         findTimeOffByUserId: function (userId) {
             return new Promise(function (resolve, reject) {
                 $.ajax({
-                    url: "/api/v1/time-off/list",
+                    url: "/api/v1/time-off",
                     method: "GET",
                     data: {
                         userId: userId
                     },
+                    acceptType: "json",
+                    success: resolve,
+                    error: _.partial(handleAjaxError, _, reject)
+                });
+            });
+        },
+
+        findAllTimeOff: function () {
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: "/api/v1/time-off/list",
+                    method: "GET",
                     acceptType: "json",
                     success: resolve,
                     error: _.partial(handleAjaxError, _, reject)

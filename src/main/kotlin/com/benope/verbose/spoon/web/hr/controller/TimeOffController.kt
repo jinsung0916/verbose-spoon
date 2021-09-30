@@ -30,12 +30,18 @@ class TimeOffController(
         return timeOffService.createTimeOff(createTimeOffRequest)
     }
 
-    @GetMapping("/list")
+    @GetMapping
     @PreAuthorize("hasRole('ROLE_ADMIN') or #userId == authentication.principal.userId")
     fun findTimeOffByUserId(
         @RequestParam @NotNull userId: Long?
     ): List<TimeOffResponse> {
         return timeOffService.findTimeOffByUserId(userId)
+    }
+
+    @GetMapping("/list")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    fun findAllTimeOff(): List<TimeOffResponse> {
+        return timeOffService.findAllTimeOff()
     }
 
     @DeleteMapping("/{timeOffId}")
