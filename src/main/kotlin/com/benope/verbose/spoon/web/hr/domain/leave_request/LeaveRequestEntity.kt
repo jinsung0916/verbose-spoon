@@ -3,6 +3,8 @@ package com.benope.verbose.spoon.web.hr.domain.leave_request
 import com.benope.verbose.spoon.core_backend.common.audit.AuditEntity
 import com.benope.verbose.spoon.core_backend.security.domain.Role
 import com.benope.verbose.spoon.core_backend.security.domain.User
+import com.benope.verbose.spoon.web.hr.domain.leave_request.event.LeaveRequestApprovalEvent
+import com.benope.verbose.spoon.web.hr.domain.leave_request.event.LeaveRequestCreatedEvent
 import com.benope.verbose.spoon.web.hr.domain.time_off.TimeOffDay
 import com.benope.verbose.spoon.web.hr.exception.ApprovalLineNotAuthorizedException
 import com.benope.verbose.spoon.web.hr.exception.LeaveRequestUnableToDeleteException
@@ -58,6 +60,10 @@ abstract class LeaveRequestEntity(
         val approveLine = findApprovalLine(userId) ?: throw ApprovalLineNotAuthorizedException()
         approveLine.isApproved = true
         approveLine.approveDateTime = LocalDateTime.now()
+
+        if(isApproved()) {
+            registerEvent(LeaveRequestApprovalEvent(this))
+        }
     }
 
     private fun findApprovalLine(userId: Long?): ApprovalLine? {
@@ -93,4 +99,7 @@ abstract class LeaveRequestEntity(
                 || (requestUser?.hasRole(Role.ROLE_ADMIN) ?: false)
     }
 
+    fun raiseCreateEvent() {
+        registerEvent(LeaveRequestCreatedEvent(this))
+    }
 }

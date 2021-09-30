@@ -5,4 +5,8 @@ import javax.persistence.Embeddable
 @Embeddable
 data class Nickname(
     var value: String?
-)
+) {
+    override fun toString(): String {
+        return this.value ?: ""
+    }
+}

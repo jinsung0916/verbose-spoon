@@ -34,7 +34,8 @@ class LeaveRequestService(
             leaveRequestEntity.getTotalTimeOffDay()
         )
 
-        return LeaveRequestResp(savedEntity, null)
+        savedEntity.raiseCreateEvent()
+        return LeaveRequestResp(leaveRequestRepository.save(savedEntity), null)
     }
 
     fun findByUserId(userId: Long?): List<LeaveRequestResp> {

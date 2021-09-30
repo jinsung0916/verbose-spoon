@@ -2,6 +2,14 @@ spring:
   profiles:
     active: @spring.profiles.active@
     include: web
+  mail:
+    host: smtp.mailplug.co.kr
+    port: 465
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    test-connection: true
+    properties:
+      mail.smtp.ssl.enable: true
 
 logging:
   config: classpath:logback-${spring.profiles.active}.xml
