@@ -2,6 +2,8 @@ package com.benope.verbose.spoon.web.hr.domain.time_off
 
 import com.benope.verbose.spoon.BenopeTest
 import com.benope.verbose.spoon.core_backend.security.repository.UserRepository
+import com.benope.verbose.spoon.web.hr.exception.InvalidTimeOffDayException
+import com.benope.verbose.spoon.web.hr.exception.InvalidValidityPeriodException
 import com.benope.verbose.spoon.web.hr.repository.TimeOffRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
@@ -38,7 +40,7 @@ class TimeOffCreateTest(
         val startDate = LocalDate.now()
         val endDate = startDate.minusDays(1)
 
-        assertThrows<IllegalArgumentException> {
+        assertThrows<InvalidValidityPeriodException> {
             PaidTimeOff(
                 userId = user?.userId!!,
                 validityPeriod = ValidityPeriod(startDate, endDate),
@@ -70,7 +72,7 @@ class TimeOffCreateTest(
 
         val remainingDays = 1.3
 
-        assertThrows<IllegalArgumentException> {
+        assertThrows<InvalidTimeOffDayException> {
             PaidTimeOff(
                 userId = user?.userId!!,
                 validityPeriod = ValidityPeriod(LocalDate.now(), LocalDate.now()),

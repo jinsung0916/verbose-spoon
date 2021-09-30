@@ -144,4 +144,28 @@ class LeaveRequestServiceTest(
         assertThat(leaveRequest.size).isEqualTo(0)
     }
 
+    @Test
+    @DisplayName("휴가 신청을 삭제한다.")
+    fun preventDuplicatedDeleteLeaveRequestTest() {
+        val request = CreateLeaveRequestReq(
+            type = LeaveRequestType.FULL_DAY,
+            startDate = LocalDate.now(),
+            endDate = LocalDate.now(),
+            userId = user?.userId,
+            approvalLine = listOf(admin?.userId!!)
+        )
+
+        val createResponse1 = leaveRequestService.createLeaveRequest(request)
+        val createResponse2 = leaveRequestService.createLeaveRequest(request)
+
+        val deleteRequest = DeleteLeaveRequestReq(
+            leaveRequestId = createResponse1.leaveRequestId,
+            requestUserId =  createResponse1.userId
+        )
+
+        leaveRequestService.deleteLeaveRequest(deleteRequest)
+
+        assertThat(leaveRequestService.findByUserId(createResponse2.userId).size).isEqualTo(1)
+    }
+
 }

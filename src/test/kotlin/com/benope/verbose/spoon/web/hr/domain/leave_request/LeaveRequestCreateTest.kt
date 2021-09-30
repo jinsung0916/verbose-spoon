@@ -3,6 +3,7 @@ package com.benope.verbose.spoon.web.hr.domain.leave_request
 import com.benope.verbose.spoon.BenopeTest
 import com.benope.verbose.spoon.core_backend.security.repository.UserRepository
 import com.benope.verbose.spoon.web.hr.domain.time_off.TimeOffDay
+import com.benope.verbose.spoon.web.hr.exception.InvalidHalfDayPeriodException
 import com.benope.verbose.spoon.web.hr.repository.LeaveRequestRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
@@ -40,7 +41,7 @@ class LeaveRequestCreateTest(
     fun createHalfDayLeaveExceptionTest() {
         val user = userRepository.findByUsername(USERNAME)
 
-        assertThrows<IllegalArgumentException> {
+        assertThrows<InvalidHalfDayPeriodException> {
             HalfDayLeave(
                 userId = user?.userId!!,
                 period = LeavePeriod(
