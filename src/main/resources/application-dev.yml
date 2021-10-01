@@ -27,6 +27,9 @@ spring:
   output:
     ansi:
       enabled: always
+  mail:
+    host: HOST_NOT_DEFINED
+    username: USERNAME_NOT_DEFINED
 
 server:
   port: 8443
