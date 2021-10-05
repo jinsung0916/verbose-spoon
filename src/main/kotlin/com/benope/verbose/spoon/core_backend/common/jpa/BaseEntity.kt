@@ -17,6 +17,10 @@ import javax.persistence.Version
 @EntityListeners(AuditingEntityListener::class)
 open class BaseEntity<A : AbstractAggregateRoot<A>?> : AbstractAggregateRoot<A>() {
 
+    companion object {
+        const val NOT_DELETED_CLAUSE = "is_deleted = false"
+    }
+
     @CreatedDate
     open var createDateTime: LocalDateTime? = null
         protected set

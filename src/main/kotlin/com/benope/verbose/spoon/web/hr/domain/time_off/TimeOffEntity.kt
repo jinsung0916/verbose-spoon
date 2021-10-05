@@ -4,12 +4,14 @@ import com.benope.verbose.spoon.core_backend.common.jpa.BaseEntity
 import com.benope.verbose.spoon.web.hr.domain.TimeOff
 import com.benope.verbose.spoon.web.hr.domain.leave_request.LeaveRequestType
 import com.benope.verbose.spoon.web.hr.exception.TimeOffUnableToDeleteException
+import org.hibernate.annotations.Where
 import javax.persistence.*
 
 @Entity
 @Table(name = "time_off")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
+@Where(clause = BaseEntity.NOT_DELETED_CLAUSE)
 abstract class TimeOffEntity(
 
     open var userId: Long,

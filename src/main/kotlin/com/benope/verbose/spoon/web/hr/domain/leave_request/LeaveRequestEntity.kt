@@ -8,6 +8,7 @@ import com.benope.verbose.spoon.web.hr.domain.leave_request.event.LeaveRequestCr
 import com.benope.verbose.spoon.web.hr.domain.time_off.TimeOffDay
 import com.benope.verbose.spoon.web.hr.exception.ApprovalLineNotAuthorizedException
 import com.benope.verbose.spoon.web.hr.exception.LeaveRequestUnableToDeleteException
+import org.hibernate.annotations.Where
 import java.time.LocalDateTime
 import javax.persistence.*
 
@@ -15,6 +16,7 @@ import javax.persistence.*
 @Table(name = "leave_request")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
+@Where(clause = BaseEntity.NOT_DELETED_CLAUSE)
 abstract class LeaveRequestEntity(
     private var userId: Long,
     @Embedded

@@ -20,7 +20,7 @@ class TimeOffRepositoryImpl(
     override fun findByUserId(userId: Long?): TimeOff {
         val query =
             em.createQuery(
-                "SELECT t FROM TimeOffEntity t WHERE t.userId = :userId AND t.isDeleted = false",
+                "SELECT t FROM TimeOffEntity t WHERE t.userId = :userId",
                 TimeOffEntity::class.java
             )
 

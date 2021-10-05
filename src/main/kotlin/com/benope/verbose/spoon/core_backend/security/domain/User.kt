@@ -1,6 +1,7 @@
 package com.benope.verbose.spoon.core_backend.security.domain
 
 import com.benope.verbose.spoon.core_backend.common.jpa.BaseEntity
+import org.hibernate.annotations.Where
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
@@ -10,6 +11,7 @@ import javax.persistence.*
 
 @Entity
 @Table
+@Where(clause = BaseEntity.NOT_DELETED_CLAUSE)
 class User(
     @Column(nullable = false, unique = true)
     private val username: String,
