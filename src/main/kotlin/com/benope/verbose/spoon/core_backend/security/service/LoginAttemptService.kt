@@ -4,12 +4,14 @@ import com.benope.verbose.spoon.core_backend.security.domain.LoginHistory
 import com.benope.verbose.spoon.core_backend.security.repository.LoginHistoryRepository
 import com.benope.verbose.spoon.core_backend.security.repository.UserRepository
 import org.springframework.stereotype.Service
+import javax.servlet.http.HttpServletRequest
 import javax.transaction.Transactional
 
 @Service
 class LoginAttemptService(
     private val userRepository: UserRepository,
-    private val loginHistoryRepository: LoginHistoryRepository
+    private val loginHistoryRepository: LoginHistoryRepository,
+    private val request: HttpServletRequest
 ) {
 
     @Transactional
@@ -19,7 +21,11 @@ class LoginAttemptService(
             user.handleLoginSuccess()
             userRepository.save(user)
 
-            val loginHistory = LoginHistory(userId = user.userId)
+            val loginHistory = LoginHistory(
+                userId = user.userId,
+                loginIp = request.remoteAddr,
+                loginUserAgent = request.getHeader("User-Agent")
+            )
             loginHistoryRepository.save(loginHistory)
         }
     }
@@ -31,7 +37,12 @@ class LoginAttemptService(
             user.handleLoginFailure()
             userRepository.save(user)
 
-            val loginHistory = LoginHistory(userId = user.userId, isSuccess = false)
+            val loginHistory = LoginHistory(
+                userId = user.userId,
+                isSuccess = false,
+                loginIp = request.remoteAddr,
+                loginUserAgent = request.getHeader("User-Agent")
+            )
             loginHistoryRepository.save(loginHistory)
         }
     }

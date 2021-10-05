@@ -8,7 +8,9 @@ import javax.persistence.*
 class LoginHistory(
     @Column(nullable = false)
     private val userId: Long?,
-    val isSuccess: Boolean = true
+    val isSuccess: Boolean = true,
+    val loginIp: String?,
+    val loginUserAgent: String?
 ) : AuditEntity<LoginHistory>() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
