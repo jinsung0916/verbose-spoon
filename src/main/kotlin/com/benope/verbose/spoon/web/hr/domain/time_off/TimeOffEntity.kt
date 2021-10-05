@@ -1,6 +1,6 @@
 package com.benope.verbose.spoon.web.hr.domain.time_off
 
-import com.benope.verbose.spoon.core_backend.common.audit.AuditEntity
+import com.benope.verbose.spoon.core_backend.common.jpa.BaseEntity
 import com.benope.verbose.spoon.web.hr.domain.TimeOff
 import com.benope.verbose.spoon.web.hr.domain.leave_request.LeaveRequestType
 import com.benope.verbose.spoon.web.hr.exception.TimeOffUnableToDeleteException
@@ -23,7 +23,7 @@ abstract class TimeOffEntity(
     )
     private var remainingDays: TimeOffDay
 
-) : TimeOff, AuditEntity<TimeOffEntity>() {
+) : TimeOff, BaseEntity<TimeOffEntity>() {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

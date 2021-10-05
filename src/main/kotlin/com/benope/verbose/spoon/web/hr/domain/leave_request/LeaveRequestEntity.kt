@@ -1,6 +1,6 @@
 package com.benope.verbose.spoon.web.hr.domain.leave_request
 
-import com.benope.verbose.spoon.core_backend.common.audit.AuditEntity
+import com.benope.verbose.spoon.core_backend.common.jpa.BaseEntity
 import com.benope.verbose.spoon.core_backend.security.domain.Role
 import com.benope.verbose.spoon.core_backend.security.domain.User
 import com.benope.verbose.spoon.web.hr.domain.leave_request.event.LeaveRequestApprovalEvent
@@ -19,7 +19,7 @@ abstract class LeaveRequestEntity(
     private var userId: Long,
     @Embedded
     private var period: LeavePeriod
-) : AuditEntity<LeaveRequestEntity>() {
+) : BaseEntity<LeaveRequestEntity>() {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

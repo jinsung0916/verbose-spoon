@@ -1,6 +1,6 @@
 package com.benope.verbose.spoon.core_backend.security.domain
 
-import com.benope.verbose.spoon.core_backend.common.audit.AuditEntity
+import com.benope.verbose.spoon.core_backend.common.jpa.BaseEntity
 import javax.persistence.*
 
 @Entity
@@ -12,7 +12,7 @@ class LoginHistory(
     val loginIp: String?,
     val loginUserAgent: String?,
     val message: String? = ""
-) : AuditEntity<LoginHistory>() {
+) : BaseEntity<LoginHistory>() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null

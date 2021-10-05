@@ -1,6 +1,6 @@
 package com.benope.verbose.spoon.core_backend.security.domain
 
-import com.benope.verbose.spoon.core_backend.common.audit.AuditEntity
+import com.benope.verbose.spoon.core_backend.common.jpa.BaseEntity
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
@@ -27,7 +27,7 @@ class User(
         value = [AttributeOverride(name = "value", column = Column(name = "email"))]
     )
     var email: Email?
-) : AuditEntity<User>(), UserDetails {
+) : BaseEntity<User>(), UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
