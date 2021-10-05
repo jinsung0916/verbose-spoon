@@ -15,7 +15,7 @@ class AuthenticationFailureEventHandler(
     override fun onApplicationEvent(event: AbstractAuthenticationFailureEvent) {
         val authentication = event.source as Authentication
         val username = usernameExtractor.extract(authentication.principal)
-        loginAttemptService.handleLoginFailure(username)
+        loginAttemptService.handleLoginFailure(username, event.exception.message)
     }
 
 }

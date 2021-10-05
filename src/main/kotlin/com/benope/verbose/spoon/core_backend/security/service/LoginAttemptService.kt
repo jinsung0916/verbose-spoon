@@ -31,7 +31,7 @@ class LoginAttemptService(
     }
 
     @Transactional
-    fun handleLoginFailure(username: String?) {
+    fun handleLoginFailure(username: String?, message: String?) {
         val user = userRepository.findByUsername(username)
         user?.let {
             user.handleLoginFailure()
@@ -41,7 +41,8 @@ class LoginAttemptService(
                 userId = user.userId,
                 isSuccess = false,
                 loginIp = request.remoteAddr,
-                loginUserAgent = request.getHeader("User-Agent")
+                loginUserAgent = request.getHeader("User-Agent"),
+                message = message
             )
             loginHistoryRepository.save(loginHistory)
         }

@@ -10,7 +10,8 @@ class LoginHistory(
     private val userId: Long?,
     val isSuccess: Boolean = true,
     val loginIp: String?,
-    val loginUserAgent: String?
+    val loginUserAgent: String?,
+    val message: String? = ""
 ) : AuditEntity<LoginHistory>() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
