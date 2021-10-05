@@ -56,19 +56,17 @@ internal class UserTest : BenopeTest() {
     @DisplayName("로그인 실패 이후 실패 이력을 저장한다.")
     fun saveUserHistoryAfterLoginFailTest() {
         // Given
-        val user = userRepository.findByUsername(USERNAME)
-        makeUserInvalid(user)
-        userRepository.save(user!!)
+        val token = UsernamePasswordAuthenticationToken(USERNAME, "${PASSWORD}!")
 
         // When
         try {
-            val token = UsernamePasswordAuthenticationToken(USERNAME, PASSWORD)
             authenticationManager.authenticate(token)
         } catch (e: AuthenticationException) {
             // BYPASS
         } finally {
             // Then
-            val loginHistories = loginHistoryRepository.findByUserId(user.userId)
+            val user = userRepository.findByUsername(USERNAME)
+            val loginHistories = loginHistoryRepository.findByUserId(user?.userId)
             assert(loginHistories.any { loginHistory -> !loginHistory.isSuccess })
         }
     }
