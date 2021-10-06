@@ -23,7 +23,7 @@ class LoginAttemptService(
 
             val loginHistory = LoginHistory(
                 userId = user.userId,
-                loginIp = request.remoteAddr,
+                loginIp = getIp(request),
                 loginUserAgent = request.getHeader("User-Agent")
             )
             loginHistoryRepository.save(loginHistory)
@@ -40,12 +40,16 @@ class LoginAttemptService(
             val loginHistory = LoginHistory(
                 userId = user.userId,
                 isSuccess = false,
-                loginIp = request.remoteAddr,
+                loginIp = getIp(request),
                 loginUserAgent = request.getHeader("User-Agent"),
                 message = message
             )
             loginHistoryRepository.save(loginHistory)
         }
+    }
+
+    private fun getIp(request: HttpServletRequest?): String? {
+        return request?.getHeader("X-Forwarded-For") ?: request?.remoteAddr
     }
 
 }

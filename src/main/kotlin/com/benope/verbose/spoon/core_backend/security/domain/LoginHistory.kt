@@ -13,7 +13,7 @@ class LoginHistory(
     val isSuccess: Boolean = true,
     val loginIp: String?,
     val loginUserAgent: String?,
-    val message: String? = ""
+    val message: String? = null
 ) : BaseEntity<LoginHistory>() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
