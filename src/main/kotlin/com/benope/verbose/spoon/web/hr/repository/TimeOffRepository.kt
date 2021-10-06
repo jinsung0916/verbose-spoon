@@ -1,6 +1,6 @@
 package com.benope.verbose.spoon.web.hr.repository
 
+import com.benope.verbose.spoon.core_backend.common.jpa.BaseRepository
 import com.benope.verbose.spoon.web.hr.domain.time_off.TimeOffEntity
-import org.springframework.data.jpa.repository.JpaRepository
 
-interface TimeOffRepository : JpaRepository<TimeOffEntity, Long?>, CustomizedTimeOffRepository
+interface TimeOffRepository : BaseRepository<TimeOffEntity, Long>, CustomizedTimeOffRepository

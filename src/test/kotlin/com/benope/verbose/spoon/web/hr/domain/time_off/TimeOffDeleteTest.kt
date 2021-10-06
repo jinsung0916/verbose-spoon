@@ -44,7 +44,7 @@ class TimeOffDeleteTest(
             .get()
 
         assertThrows<TimeOffUnableToDeleteException> {
-            timeOffRepository.deleteById(timeOffEntity.timeOffId)
+            timeOffRepository.deleteById(timeOffEntity.timeOffId!!)
         }
     }
 

@@ -28,13 +28,6 @@ class TimeOffRepositoryImpl(
         return DelegatingTimeOff(query.resultList, timeOffComparator)
     }
 
-    override fun deleteById(timeOffId: Long?) {
-        val timeOffEntity = em.find(TimeOffEntity::class.java, timeOffId)
-            ?: throw IllegalArgumentException("TimeOffEntity not found for id: $timeOffId")
-        timeOffEntity.markDeleted()
-        merge(timeOffEntity)
-    }
-
     override fun save(timeOff: TimeOff): TimeOff {
         val entityList = timeOff.toEntityList().stream()
             .map {

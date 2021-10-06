@@ -56,6 +56,8 @@ class TimeOffService(
     }
 
     fun deleteTimeOff(timeOffId: Long?) {
+        timeOffId ?: throw IllegalArgumentException("TimeOffId cannot be null.")
+
         timeOffRepository.deleteById(timeOffId)
     }
 
