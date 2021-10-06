@@ -6,7 +6,7 @@ import java.io.Serializable
 import javax.persistence.EntityManager
 
 class BaseRepositoryImpl<T : BaseEntity<T>, ID : Serializable>(
-    private val entityInformation: JpaEntityInformation<T, ID>,
+    entityInformation: JpaEntityInformation<T, ID>,
     private val em: EntityManager
 ) : SimpleJpaRepository<T, ID>(entityInformation, em), BaseRepository<T, ID> {
 
@@ -19,7 +19,7 @@ class BaseRepositoryImpl<T : BaseEntity<T>, ID : Serializable>(
     }
 
     override fun deleteById(id: ID) {
-        val entity = findById(id).orElseThrow{ throw NullPointerException("Entity not found.") }
+        val entity = findById(id).orElseThrow { throw NullPointerException("Entity not found.") }
         safeDelete(entity)
     }
 
@@ -38,6 +38,10 @@ class BaseRepositoryImpl<T : BaseEntity<T>, ID : Serializable>(
     private fun safeDelete(entity: T) {
         entity.markDeleted()
         save(entity)
+    }
+
+    override fun refresh(entity: T) {
+        em.refresh(entity)
     }
 
 }
