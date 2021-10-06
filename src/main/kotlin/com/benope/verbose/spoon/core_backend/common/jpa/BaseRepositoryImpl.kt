@@ -36,6 +36,7 @@ class BaseRepositoryImpl<T : BaseEntity<T>, ID : Serializable>(
     }
 
     private fun safeDelete(entity: T) {
+        refresh(entity) // 삭제하기 전 JPA 캐시를 갱신한다.
         entity.markDeleted()
         save(entity)
     }
