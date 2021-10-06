@@ -16,8 +16,6 @@ class TimeOffResponseRepositoryImpl(
                 "SELECT new com.benope.verbose.spoon.web.hr.dto.TimeOffResponse(t, u) " +
                         "FROM TimeOffEntity t " +
                         "JOIN User u ON u.userId = t.userId " +
-                        "WHERE t.isDeleted = false " +
-                        "  AND u.isDeleted = false " +
                         "ORDER BY u.userId, t.validityPeriod.startDate ",
                 TimeOffResponse::class.java
             )
@@ -31,9 +29,7 @@ class TimeOffResponseRepositoryImpl(
                 "SELECT new com.benope.verbose.spoon.web.hr.dto.TimeOffResponse(t, u) " +
                         "FROM TimeOffEntity t " +
                         "JOIN User u ON u.userId = t.userId " +
-                        "WHERE t.isDeleted = false " +
-                        "  AND u.userId = :userId " +
-                        "  AND u.isDeleted = false " +
+                        "WHERE u.userId = :userId " +
                         "ORDER BY t.validityPeriod.startDate ",
                 TimeOffResponse::class.java
             )

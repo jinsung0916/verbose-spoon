@@ -16,9 +16,7 @@ class LeaveRequestRespRepositoryImpl(
             "SELECT new com.benope.verbose.spoon.web.hr.dto.LeaveRequestResp(l, u) " +
                     "FROM LeaveRequestEntity l " +
                     "LEFT JOIN User u ON u.userId = l.userId " +
-                    "WHERE l.userId = :leaveRequestId " +
-                    "AND l.isDeleted = false " +
-                    "AND u.isDeleted = false ",
+                    "WHERE l.userId = :leaveRequestId ",
             LeaveRequestResp::class.java
         )
             .setParameter("leaveRequestId", leaveRequestId)
@@ -30,9 +28,7 @@ class LeaveRequestRespRepositoryImpl(
             "SELECT new com.benope.verbose.spoon.web.hr.dto.LeaveRequestResp(l, u) " +
                     "FROM LeaveRequestEntity l " +
                     "LEFT JOIN User u ON u.userId = l.userId " +
-                    "WHERE l.userId = :userId " +
-                    "AND l.isDeleted = false " +
-                    "AND u.isDeleted = false ",
+                    "WHERE l.userId = :userId ",
             LeaveRequestResp::class.java
         )
             .setParameter("userId", userId)
@@ -45,9 +41,7 @@ class LeaveRequestRespRepositoryImpl(
                     "FROM LeaveRequestEntity l " +
                     "LEFT JOIN User u ON u.userId = l.userId " +
                     "WHERE l.period.startDate BETWEEN :startDate AND :endDate " +
-                    "AND l.period.endDate BETWEEN :startDate AND :endDate " +
-                    "AND l.isDeleted = false " +
-                    "AND u.isDeleted = false ",
+                    "AND l.period.endDate BETWEEN :startDate AND :endDate ",
             LeaveRequestResp::class.java
         )
             .setParameter("startDate", startDate)
@@ -62,9 +56,7 @@ class LeaveRequestRespRepositoryImpl(
                     "JOIN l.approvalLine a " +
                     "LEFT JOIN User u ON u.userId = l.userId " +
                     "WHERE a.userId = :userId " +
-                    "AND a.isApproved = false " +
-                    "AND l.isDeleted = false " +
-                    "AND u.isDeleted = false ",
+                    "AND a.isApproved = false ",
             LeaveRequestResp::class.java
         )
             .setParameter("userId", userId)

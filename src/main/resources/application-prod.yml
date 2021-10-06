@@ -14,6 +14,13 @@ spring:
       pageable:
         default-page-size: 10
         max-page-size: 500
+  mail:
+    host: smtp.mailplug.co.kr
+    port: 465
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail.smtp.ssl.enable: true
 
 server:
   port: ${PORT}

@@ -1,4 +1,4 @@
-package com.benope.verbose.spoon.core_backend.common.audit
+package com.benope.verbose.spoon.core_backend.common.jpa
 
 import com.benope.verbose.spoon.core_backend.security.domain.User
 import org.springframework.data.domain.AuditorAware

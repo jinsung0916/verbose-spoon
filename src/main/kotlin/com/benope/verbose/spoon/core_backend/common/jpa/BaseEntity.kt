@@ -1,4 +1,4 @@
-package com.benope.verbose.spoon.core_backend.common.audit
+package com.benope.verbose.spoon.core_backend.common.jpa
 
 import com.benope.verbose.spoon.core_backend.security.domain.User
 import org.springframework.data.annotation.CreatedBy
@@ -15,7 +15,11 @@ import javax.persistence.Version
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener::class)
-open class AuditEntity<A : AbstractAggregateRoot<A>?> : AbstractAggregateRoot<A>() {
+open class BaseEntity<A : AbstractAggregateRoot<A>?> : AbstractAggregateRoot<A>() {
+
+    companion object {
+        const val NOT_DELETED_CLAUSE = "is_deleted = false"
+    }
 
     @CreatedDate
     open var createDateTime: LocalDateTime? = null

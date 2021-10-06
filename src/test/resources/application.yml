@@ -9,6 +9,9 @@ spring:
   output:
     ansi:
       enabled: always
+  mail:
+    host: HOST_NOT_DEFINED
+    username: USERNAME_NOT_DEFINED
 
 jwt:
   secret: secret
