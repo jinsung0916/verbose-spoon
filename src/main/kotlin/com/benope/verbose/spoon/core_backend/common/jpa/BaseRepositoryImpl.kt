@@ -1,5 +1,6 @@
 package com.benope.verbose.spoon.core_backend.common.jpa
 
+import com.benope.verbose.spoon.core_backend.common.exception.EntityNotFoundException
 import org.springframework.data.jpa.repository.support.JpaEntityInformation
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository
 import java.io.Serializable
@@ -19,7 +20,7 @@ class BaseRepositoryImpl<T : BaseEntity<T>, ID : Serializable>(
     }
 
     override fun deleteById(id: ID) {
-        val entity = findById(id).orElseThrow { throw NullPointerException("Entity not found.") }
+        val entity = findById(id).orElseThrow { throw EntityNotFoundException() }
         safeDelete(entity)
     }
 
