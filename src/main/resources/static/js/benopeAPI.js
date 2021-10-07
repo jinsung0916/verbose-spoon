@@ -33,7 +33,7 @@ var benopeAPI = benopeAPI || (function ($) {
             return new Promise(function (resolve, reject) {
                 $.ajax({
                     url: "/api/v1/user/" + username,
-                    method: "POST",
+                    method: "PUT",
                     contentType: "application/json",
                     acceptType: "json",
                     data: JSON.stringify(updateUserRequest),
@@ -46,8 +46,8 @@ var benopeAPI = benopeAPI || (function ($) {
         createUser: function (createUserRequest) {
             return new Promise(function (resolve, reject) {
                 $.ajax({
-                    url: "/api/v1/user/",
-                    method: "PUT",
+                    url: "/api/v1/user",
+                    method: "POST",
                     contentType: "application/json",
                     acceptType: "json",
                     data: JSON.stringify(createUserRequest),
@@ -74,7 +74,7 @@ var benopeAPI = benopeAPI || (function ($) {
             return new Promise(function (resolve, reject) {
                 $.ajax({
                     url: "/api/v1/user/" + username + "/password",
-                    method: "POST",
+                    method: "PUT",
                     contentType: "application/json",
                     acceptType: "json",
                     data: JSON.stringify(updateUserPasswordRequest),
@@ -127,8 +127,8 @@ var benopeAPI = benopeAPI || (function ($) {
         createTimeOff: function (createTimeOffRequest) {
             return new Promise(function (resolve, reject) {
                 $.ajax({
-                    url: "/api/v1/time-off/",
-                    method: "PUT",
+                    url: "/api/v1/time-off",
+                    method: "POST",
                     contentType: "application/json",
                     acceptType: "json",
                     data: JSON.stringify(createTimeOffRequest),
@@ -154,7 +154,7 @@ var benopeAPI = benopeAPI || (function ($) {
             return new Promise(function (resolve, reject) {
                 $.ajax({
                     url: "/api/v1/leave-request",
-                    method: "PUT",
+                    method: "POST",
                     contentType: "application/json",
                     acceptType: "json",
                     data: JSON.stringify(request),
@@ -210,7 +210,7 @@ var benopeAPI = benopeAPI || (function ($) {
             return new Promise(function (resolve, reject) {
                 $.ajax({
                     url: "/api/v1/leave-request/approval/" + leaveRequestId,
-                    method: "POST",
+                    method: "PUT",
                     contentType: "application/json",
                     acceptType: "json",
                     success: resolve,

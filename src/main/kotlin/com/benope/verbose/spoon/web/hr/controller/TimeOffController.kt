@@ -17,7 +17,7 @@ class TimeOffController(
     private val timeOffService: TimeOffService
 ) {
 
-    @PutMapping("/")
+    @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun createTimeOff(
         @RequestBody @Validated createTimeOffRequest: CreateTimeOffRequest,

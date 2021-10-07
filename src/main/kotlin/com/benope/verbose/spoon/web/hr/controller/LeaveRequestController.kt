@@ -22,7 +22,7 @@ class LeaveRequestController(
     private val leaveRequestService: LeaveRequestService
 ) {
 
-    @PutMapping
+    @PostMapping
     fun createLeaveRequest(
         @RequestBody @Validated createLeaveRequestReq: CreateLeaveRequestReq,
         errors: BindingResult,
@@ -66,7 +66,7 @@ class LeaveRequestController(
         return leaveRequestService.findByApprovalLineUserId(approvalUserId)
     }
 
-    @PostMapping("/approval/{leaveRequestId}")
+    @PutMapping("/approval/{leaveRequestId}")
     @PreAuthorize("hasRole('ROLE_APPROVAL')")
     fun approveLeaveRequest(
         @PathVariable @NotNull leaveRequestId: Long?,
