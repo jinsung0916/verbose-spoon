@@ -13,7 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository
 import org.thymeleaf.util.StringUtils
 import java.util.concurrent.TimeUnit
 import javax.servlet.http.HttpServletRequest
@@ -50,7 +49,7 @@ class WebSecurityConfig(
 
         http
             .csrf()
-            .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+            .disable()
 
         http
             .rememberMe()
@@ -103,7 +102,10 @@ private val URLS_NOT_AUTHENTICATED = arrayOf(
     "/static/**",
     "/h2-console/**",
     "/actuator/**",
-    "/error"
+    "/error",
+    "/api-doc",
+    "/swagger-ui/**",
+    "/v3/**"
 )
 
 private val IS_APPLICATION_JSON: (HttpServletRequest) -> Boolean = { request ->

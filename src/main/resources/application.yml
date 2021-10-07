@@ -5,3 +5,14 @@ spring:
 
 logging:
   config: classpath:logback-${spring.profiles.active}.xml
+
+springdoc:
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  paths-to-match:
+    - /api/v1/**
+  swagger-ui:
+    operations-sorter: alpha
+    tags-sorter: alpha
+    disable-swagger-default-url: true
+    path: /api-doc
