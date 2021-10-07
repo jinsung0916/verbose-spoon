@@ -1,12 +1,10 @@
-package com.benope.verbose.spoon.web.hr.dto
+package com.benope.verbose.spoon.web.hr.domain.time_off
 
 import com.benope.verbose.spoon.core_backend.security.domain.User
-import com.benope.verbose.spoon.web.hr.domain.time_off.TimeOffEntity
-import com.benope.verbose.spoon.web.hr.domain.time_off.TimeOffType
 import com.benope.verbose.spoon.web.user.dto.UserResponse
 import java.time.LocalDate
 
-class TimeOffResponse constructor() {
+class TimeOffView constructor() {
 
     constructor(timeOffEntity: TimeOffEntity?, user: User?) : this() {
         this.timeOffId = timeOffEntity?.timeOffId

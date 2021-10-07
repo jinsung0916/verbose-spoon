@@ -2,9 +2,9 @@ package com.benope.verbose.spoon.web.hr.controller
 
 import com.benope.verbose.spoon.core_backend.common.exception.DtoValidationException
 import com.benope.verbose.spoon.core_backend.security.util.getUserId
+import com.benope.verbose.spoon.web.hr.domain.leave_request.LeaveRequestView
 import com.benope.verbose.spoon.web.hr.dto.CreateLeaveRequestReq
 import com.benope.verbose.spoon.web.hr.dto.DeleteLeaveRequestReq
-import com.benope.verbose.spoon.web.hr.dto.LeaveRequestResp
 import com.benope.verbose.spoon.web.hr.service.LeaveRequestService
 import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.security.access.prepost.PreAuthorize
@@ -25,7 +25,7 @@ class LeaveRequestController(
     fun createLeaveRequest(
         @RequestBody @Validated createLeaveRequestReq: CreateLeaveRequestReq,
         errors: BindingResult
-    ): LeaveRequestResp {
+    ): LeaveRequestView {
 
         if (errors.hasErrors()) {
             throw DtoValidationException(errors.fieldErrors)
@@ -40,7 +40,7 @@ class LeaveRequestController(
     @PreAuthorize("hasRole('ROLE_ADMIN') or #userId == authentication.principal.userId")
     fun findByUserId(
         @RequestParam @NotNull userId: Long?
-    ): List<LeaveRequestResp> {
+    ): List<LeaveRequestView> {
         return leaveRequestService.findByUserId(userId)
     }
 
@@ -59,7 +59,7 @@ class LeaveRequestController(
     @PreAuthorize("hasRole('ROLE_ADMIN') or #approvalUserId == authentication.principal.userId")
     fun findLeaveRequestByApprovalUserId(
         @RequestParam @NotNull approvalUserId: Long?
-    ): List<LeaveRequestResp> {
+    ): List<LeaveRequestView> {
         return leaveRequestService.findByApprovalLineUserId(approvalUserId)
     }
 
@@ -75,7 +75,7 @@ class LeaveRequestController(
     fun findAllApproved(
         @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") @NotNull startDate: LocalDate?,
         @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") @NotNull endDate: LocalDate?
-    ): List<LeaveRequestResp> {
+    ): List<LeaveRequestView> {
         return leaveRequestService.findAllApproved(startDate, endDate)
     }
 

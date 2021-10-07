@@ -1,13 +1,10 @@
-package com.benope.verbose.spoon.web.hr.dto
+package com.benope.verbose.spoon.web.hr.domain.leave_request
 
 import com.benope.verbose.spoon.core_backend.security.domain.User
-import com.benope.verbose.spoon.web.hr.domain.leave_request.ApprovalLine
-import com.benope.verbose.spoon.web.hr.domain.leave_request.LeaveRequestEntity
-import com.benope.verbose.spoon.web.hr.domain.leave_request.LeaveRequestType
 import java.time.LocalDate
 import kotlin.streams.toList
 
-class LeaveRequestResp() {
+class LeaveRequestView() {
 
     constructor(entity: LeaveRequestEntity?, user: User?) : this() {
         this.leaveRequestId = entity?.getId()
