@@ -7,7 +7,9 @@ import com.benope.verbose.spoon.core_backend.common.validation.Post
 import com.benope.verbose.spoon.web.product.controller.dto.CategoryDto
 import com.benope.verbose.spoon.web.product.domain.category.Category
 import com.benope.verbose.spoon.web.product.domain.category.CategoryRepository
+import com.benope.verbose.spoon.web.product.exception.BrandAndCategoryDuplicatedException
 import org.modelmapper.ModelMapper
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.validation.BindingResult
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
@@ -48,8 +50,14 @@ class CategoryController(
         }
 
         val entity = modelMapper.map(categoryDto, Category::class.java)
-        val savedEntity = categoryRepository.save(entity)
-        return modelMapper.map(savedEntity, CategoryDto::class.java)
+
+        try {
+            val savedEntity = categoryRepository.save(entity)
+            return modelMapper.map(savedEntity, CategoryDto::class.java)
+        } catch (e: DataIntegrityViolationException) {
+            throw BrandAndCategoryDuplicatedException()
+        }
+
     }
 
     @PatchMapping("/{id}")
