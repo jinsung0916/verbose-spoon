@@ -35,7 +35,10 @@ class ApiSecurityConfig(
             "/h2-console/**",
             "/api/v1/auth/**",
             "/actuator/**",
-            "/error"
+            "/error",
+            "/api-doc",
+            "/swagger-ui/**",
+            "/v3/**"
         )
 
         private val SC_UNAUTHORIZED: (HttpServletRequest, HttpServletResponse, Exception) -> Unit =

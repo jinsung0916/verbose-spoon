@@ -2,10 +2,10 @@ package com.benope.verbose.spoon.web.hr.service
 
 import com.benope.verbose.spoon.web.hr.domain.leave_request.LeaveRequestType
 import com.benope.verbose.spoon.web.hr.domain.time_off.TimeOffDay
+import com.benope.verbose.spoon.web.hr.domain.time_off.TimeOffView
 import com.benope.verbose.spoon.web.hr.dto.CreateTimeOffRequest
-import com.benope.verbose.spoon.web.hr.dto.TimeOffResponse
 import com.benope.verbose.spoon.web.hr.repository.TimeOffRepository
-import com.benope.verbose.spoon.web.hr.repository.TimeOffResponseRepository
+import com.benope.verbose.spoon.web.hr.repository.TimeOffViewRepository
 import org.springframework.stereotype.Service
 import javax.transaction.Transactional
 
@@ -13,7 +13,7 @@ import javax.transaction.Transactional
 @Transactional
 class TimeOffService(
     private val timeOffRepository: TimeOffRepository,
-    private val timeOffResponseRepository: TimeOffResponseRepository
+    private val timeOffViewRepository: TimeOffViewRepository
 ) {
 
     fun useTimeOff(
@@ -41,26 +41,28 @@ class TimeOffService(
         timeOffRepository.save(timeOff)
     }
 
-    fun createTimeOff(createTimeOffRequest: CreateTimeOffRequest?): TimeOffResponse {
+    fun createTimeOff(createTimeOffRequest: CreateTimeOffRequest?): TimeOffView {
         createTimeOffRequest ?: throw IllegalArgumentException("CreateTimeOffRequest cannot be null.")
 
         val entity = createTimeOffRequest.toEntity()
         val savedEntity = timeOffRepository.save(entity)
-        return TimeOffResponse(savedEntity, null)
+        return TimeOffView(savedEntity, null)
     }
 
-    fun findTimeOffByUserId(userId: Long?): List<TimeOffResponse> {
+    fun findTimeOffByUserId(userId: Long?): List<TimeOffView> {
         userId ?: throw IllegalArgumentException("UserId cannot be null.")
 
-        return timeOffResponseRepository.findByUserId(userId)
+        return timeOffViewRepository.findByUserId(userId)
     }
 
     fun deleteTimeOff(timeOffId: Long?) {
+        timeOffId ?: throw IllegalArgumentException("TimeOffId cannot be null.")
+
         timeOffRepository.deleteById(timeOffId)
     }
 
-    fun findAllTimeOff(): List<TimeOffResponse> {
-        return timeOffResponseRepository.findAll()
+    fun findAllTimeOff(): List<TimeOffView> {
+        return timeOffViewRepository.findAll()
     }
 
 }

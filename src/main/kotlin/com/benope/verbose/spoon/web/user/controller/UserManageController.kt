@@ -21,7 +21,7 @@ class UserManageController(
     private val updateUserPasswordRequestValidator: UpdateUserPasswordRequestValidator
 ) {
 
-    @PutMapping("/")
+    @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun createUser(
         @RequestBody @Valid createUserRequest: CreateUserRequest,
@@ -56,7 +56,7 @@ class UserManageController(
         return UserResponse.fromUser(userManageService.findUser(username))
     }
 
-    @PostMapping("/{username}")
+    @PutMapping("/{username}")
     @PreAuthorize("hasRole('ROLE_ADMIN') or #username == authentication.principal.username")
     fun updateUser(
         @PathVariable username: String,
@@ -79,7 +79,7 @@ class UserManageController(
         userManageService.deleteUser(username)
     }
 
-    @PostMapping("/{username}/password")
+    @PutMapping("/{username}/password")
     @PreAuthorize("hasRole('ROLE_ADMIN') or #username == authentication.principal.username")
     fun updateUserPassword(
         @PathVariable username: String,

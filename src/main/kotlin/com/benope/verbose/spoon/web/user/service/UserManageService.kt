@@ -55,8 +55,7 @@ class UserManageService(
 
     fun deleteUser(username: String?) {
         val user = findUser(username)
-        user.markDeleted()
-        userRepository.save(user)
+        userRepository.delete(user)
     }
 
     fun updateUserPassword(username: String?, updateUserPasswordRequest: UpdateUserPasswordRequest?): User {

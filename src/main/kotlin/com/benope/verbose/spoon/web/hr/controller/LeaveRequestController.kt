@@ -1,14 +1,13 @@
 package com.benope.verbose.spoon.web.hr.controller
 
 import com.benope.verbose.spoon.core_backend.common.exception.DtoValidationException
-import com.benope.verbose.spoon.core_backend.security.domain.User
+import com.benope.verbose.spoon.core_backend.security.util.getUserId
+import com.benope.verbose.spoon.web.hr.domain.leave_request.LeaveRequestView
 import com.benope.verbose.spoon.web.hr.dto.CreateLeaveRequestReq
 import com.benope.verbose.spoon.web.hr.dto.DeleteLeaveRequestReq
-import com.benope.verbose.spoon.web.hr.dto.LeaveRequestResp
 import com.benope.verbose.spoon.web.hr.service.LeaveRequestService
 import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.validation.BindingResult
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
@@ -22,18 +21,17 @@ class LeaveRequestController(
     private val leaveRequestService: LeaveRequestService
 ) {
 
-    @PutMapping
+    @PostMapping
     fun createLeaveRequest(
         @RequestBody @Validated createLeaveRequestReq: CreateLeaveRequestReq,
-        errors: BindingResult,
-        @AuthenticationPrincipal user: User
-    ): LeaveRequestResp {
+        errors: BindingResult
+    ): LeaveRequestView {
 
         if (errors.hasErrors()) {
             throw DtoValidationException(errors.fieldErrors)
         }
 
-        createLeaveRequestReq.userId = user.userId
+        createLeaveRequestReq.userId = getUserId()
 
         return leaveRequestService.createLeaveRequest(createLeaveRequestReq)
     }
@@ -42,18 +40,17 @@ class LeaveRequestController(
     @PreAuthorize("hasRole('ROLE_ADMIN') or #userId == authentication.principal.userId")
     fun findByUserId(
         @RequestParam @NotNull userId: Long?
-    ): List<LeaveRequestResp> {
+    ): List<LeaveRequestView> {
         return leaveRequestService.findByUserId(userId)
     }
 
     @DeleteMapping("/{leaveRequestId}")
     fun deleteLeaveRequest(
         @PathVariable @NotNull leaveRequestId: Long?,
-        @AuthenticationPrincipal user: User?
     ) {
         val deleteLeaveRequestReq = DeleteLeaveRequestReq(
             leaveRequestId = leaveRequestId,
-            requestUserId = user?.userId
+            requestUserId = getUserId()
         )
         leaveRequestService.deleteLeaveRequest(deleteLeaveRequestReq)
     }
@@ -62,24 +59,23 @@ class LeaveRequestController(
     @PreAuthorize("hasRole('ROLE_ADMIN') or #approvalUserId == authentication.principal.userId")
     fun findLeaveRequestByApprovalUserId(
         @RequestParam @NotNull approvalUserId: Long?
-    ): List<LeaveRequestResp> {
+    ): List<LeaveRequestView> {
         return leaveRequestService.findByApprovalLineUserId(approvalUserId)
     }
 
-    @PostMapping("/approval/{leaveRequestId}")
+    @PutMapping("/approval/{leaveRequestId}")
     @PreAuthorize("hasRole('ROLE_APPROVAL')")
     fun approveLeaveRequest(
-        @PathVariable @NotNull leaveRequestId: Long?,
-        @AuthenticationPrincipal user: User?
+        @PathVariable @NotNull leaveRequestId: Long?
     ) {
-        leaveRequestService.approveRequest(leaveRequestId = leaveRequestId, approveUserId = user?.userId)
+        leaveRequestService.approveRequest(leaveRequestId = leaveRequestId, approveUserId = getUserId())
     }
 
     @GetMapping("/list/approved")
     fun findAllApproved(
         @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") @NotNull startDate: LocalDate?,
         @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") @NotNull endDate: LocalDate?
-    ): List<LeaveRequestResp> {
+    ): List<LeaveRequestView> {
         return leaveRequestService.findAllApproved(startDate, endDate)
     }
 

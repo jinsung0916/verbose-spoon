@@ -6,8 +6,6 @@ interface CustomizedTimeOffRepository {
 
     fun findByUserId(userId: Long?): TimeOff
 
-    fun deleteById(timeOffId: Long?)
-
     fun save(timeOff: TimeOff): TimeOff
 
 }

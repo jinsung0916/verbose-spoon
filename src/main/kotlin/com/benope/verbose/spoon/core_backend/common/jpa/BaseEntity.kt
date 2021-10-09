@@ -1,6 +1,7 @@
 package com.benope.verbose.spoon.core_backend.common.jpa
 
 import com.benope.verbose.spoon.core_backend.security.domain.User
+import com.fasterxml.jackson.annotation.JsonIgnore
 import org.springframework.data.annotation.CreatedBy
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedBy
@@ -21,28 +22,34 @@ open class BaseEntity<A : AbstractAggregateRoot<A>?> : AbstractAggregateRoot<A>(
         const val NOT_DELETED_CLAUSE = "is_deleted = false"
     }
 
+    @JsonIgnore
     @CreatedDate
     open var createDateTime: LocalDateTime? = null
         protected set
 
+    @JsonIgnore
     @CreatedBy
     open var createdBy: Long? = null
         protected set
 
+    @JsonIgnore
     @LastModifiedDate
     open var lastModifiedDatetime: LocalDateTime? = null
         protected set
 
+    @JsonIgnore
     @LastModifiedBy
     open var lastModifiedBy: Long? = null
         protected set
 
     // Version property for optimistic locking.
+    @JsonIgnore
     @Version
     open var version: Int? = null
         protected set
 
     // Delete flag for soft delete
+    @JsonIgnore
     open var isDeleted: Boolean = false
         protected set
 

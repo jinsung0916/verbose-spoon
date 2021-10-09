@@ -2,11 +2,11 @@ package com.benope.verbose.spoon.web.hr.service
 
 import com.benope.verbose.spoon.core_backend.common.exception.EntityNotFoundException
 import com.benope.verbose.spoon.web.hr.domain.leave_request.LeaveRequestEntity
+import com.benope.verbose.spoon.web.hr.domain.leave_request.LeaveRequestView
 import com.benope.verbose.spoon.web.hr.dto.CreateLeaveRequestReq
 import com.benope.verbose.spoon.web.hr.dto.DeleteLeaveRequestReq
-import com.benope.verbose.spoon.web.hr.dto.LeaveRequestResp
 import com.benope.verbose.spoon.web.hr.repository.LeaveRequestRepository
-import com.benope.verbose.spoon.web.hr.repository.LeaveRequestRespRepository
+import com.benope.verbose.spoon.web.hr.repository.LeaveRequestViewRepository
 import com.benope.verbose.spoon.web.user.service.UserManageService
 import org.springframework.stereotype.Service
 import java.time.LocalDate
@@ -16,12 +16,12 @@ import javax.transaction.Transactional
 @Transactional
 class LeaveRequestService(
     private val leaveRequestRepository: LeaveRequestRepository,
-    private val leaveRequestRespRepository: LeaveRequestRespRepository,
+    private val leaveRequestViewRepository: LeaveRequestViewRepository,
     private val timeOffService: TimeOffService,
     private val userManageService: UserManageService
 ) {
 
-    fun createLeaveRequest(request: CreateLeaveRequestReq?): LeaveRequestResp {
+    fun createLeaveRequest(request: CreateLeaveRequestReq?): LeaveRequestView {
         request ?: throw IllegalArgumentException("CreateLeaveRequestReq cannot be null.")
 
         val leaveRequestEntity = request.toEntity(userManageService)
@@ -35,15 +35,15 @@ class LeaveRequestService(
         )
 
         savedEntity.raiseCreateEvent()
-        return LeaveRequestResp(leaveRequestRepository.save(savedEntity), null)
+        return LeaveRequestView(leaveRequestRepository.save(savedEntity), null)
     }
 
-    fun findByUserId(userId: Long?): List<LeaveRequestResp> {
-        return leaveRequestRespRepository.findByUserId(userId)
+    fun findByUserId(userId: Long?): List<LeaveRequestView> {
+        return leaveRequestViewRepository.findByUserId(userId)
     }
 
-    fun findByApprovalLineUserId(approveUserId: Long?): List<LeaveRequestResp> {
-        return leaveRequestRespRepository.findByApprovalLineUserId(approveUserId)
+    fun findByApprovalLineUserId(approveUserId: Long?): List<LeaveRequestView> {
+        return leaveRequestViewRepository.findByApprovalLineUserId(approveUserId)
     }
 
     private fun findById(leaveRequestId: Long?): LeaveRequestEntity {
@@ -52,11 +52,11 @@ class LeaveRequestService(
         return leaveRequestRepository.findById(leaveRequestId).orElseThrow { EntityNotFoundException() }
     }
 
-    fun findAllApproved(startDate: LocalDate?, endDate: LocalDate?): List<LeaveRequestResp> {
+    fun findAllApproved(startDate: LocalDate?, endDate: LocalDate?): List<LeaveRequestView> {
         startDate ?: throw IllegalArgumentException("StartDate cannot be null.")
         endDate ?: throw IllegalArgumentException("EndDate cannot be null.")
 
-        return leaveRequestRespRepository.findAllByPeriod(startDate, endDate)
+        return leaveRequestViewRepository.findAllByPeriod(startDate, endDate)
             .filter { it.isApproved ?: false }
     }
 
